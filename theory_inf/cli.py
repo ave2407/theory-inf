@@ -10,11 +10,14 @@ from theory_inf.distributions import InputError, fraction_text, probability
 from theory_inf.experiment import analyze
 from theory_inf.source import Source, read_json
 from theory_inf.variant import VARIANT
-from theory_inf.uniform import analyze_uniform, entropy, iid_distribution
+from theory_inf.iid import iid_distribution
+from theory_inf.information import entropy
+from theory_inf.uniform import analyze_uniform
 from theory_inf.archive import compress, decompress
 
 
 def length(value: str) -> int | None:
+    """Разобрать --n как целое или None; нулевую и отрицательную длину разрешить."""
     if value.lower() == "none":
         return None
     try:
@@ -24,6 +27,7 @@ def length(value: str) -> int | None:
 
 
 def parser() -> argparse.ArgumentParser:
+    """Описать команды и аргументы CLI без выполнения вычислений или записи файлов."""
     result = argparse.ArgumentParser(description="Теория информации, ДЗ №1")
     result.add_argument("--variant", action="store_true", help="параметры собственного варианта")
     commands = result.add_subparsers(dest="command")
@@ -61,6 +65,7 @@ def parser() -> argparse.ArgumentParser:
 
 
 def json_text(value: dict) -> str:
+    """Подготовить JSON для вывода; ошибки представления чисел превратить в InputError."""
     try:
         return json.dumps(value, ensure_ascii=False, indent=2) + "\n"
     except ValueError as exc:
@@ -84,6 +89,7 @@ def check_output_paths(args: argparse.Namespace) -> None:
 
 
 def write_result(data: dict, output: str | None) -> None:
+    """Вывести результат в stdout или перезаписать указанный UTF-8 JSON-файл."""
     result = json_text(data)
     if output:
         Path(output).write_text(result, encoding="utf-8")
@@ -92,6 +98,7 @@ def write_result(data: dict, output: str | None) -> None:
 
 
 def run_generate(args: argparse.Namespace, source: Source) -> None:
+    """Выдать по одному JSON-символу на строку; при N≤0 или None работать до остановки."""
     stream = source.generate(args.seed)
     finite = args.n is not None and args.n > 0
     if finite:
@@ -106,6 +113,7 @@ def run_generate(args: argparse.Namespace, source: Source) -> None:
 
 
 def run_analyze(args: argparse.Namespace, source: Source) -> None:
+    """Прочитать блок из аргументов или JSON-файла и вывести вероятности с частотами."""
     word = args.word if args.word_file is None else read_json(args.word_file)
     if not isinstance(word, list) or not word or any(not isinstance(a, str) or not a for a in word):
         raise InputError("Блок: ожидается непустой JSON-массив непустых строк")
@@ -113,6 +121,7 @@ def run_analyze(args: argparse.Namespace, source: Source) -> None:
 
 
 def run_entropy(args: argparse.Namespace, source: Source) -> None:
+    """Проверить iid-источник и вывести его распределение и энтропию."""
     distribution = iid_distribution(source)
     data = {"stationary": True, "memoryless": True,
             "distribution": {a: fraction_text(p) for a, p in distribution.items()},
@@ -121,6 +130,7 @@ def run_entropy(args: argparse.Namespace, source: Source) -> None:
 
 
 def run_uniform(args: argparse.Namespace, source: Source) -> None:
+    """Разобрать R и ε, сохранить описание кода и вывести таблицу ошибок с асимптотикой."""
     distribution = iid_distribution(source)
     rate = None if args.rate.upper() == "H" else probability(args.rate, "R")
     epsilon = probability(args.epsilon, "ε")
@@ -136,6 +146,7 @@ def run_uniform(args: argparse.Namespace, source: Source) -> None:
 
 
 def run(args: argparse.Namespace, argument_parser: argparse.ArgumentParser) -> None:
+    """Выбрать обработчик команды; перед загрузкой источника проверить выходные пути."""
     if args.variant:
         write_result(VARIANT.as_dict(), None)
         return
@@ -156,6 +167,11 @@ def run(args: argparse.Namespace, argument_parser: argparse.ArgumentParser) -> N
 
 
 def main(argv: list[str] | None = None) -> int:
+    """Запустить CLI; вернуть код завершения и вывести понятную диагностику ошибок.
+
+    argv=None читает аргументы процесса. Успех даёт 0, ошибка данных или I/O — 2,
+    остановка Ctrl+C — 130, закрытый получателем stdout — 1.
+    """
     argument_parser = parser()
     args = argument_parser.parse_args(argv)
     try:

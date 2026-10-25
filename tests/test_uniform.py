@@ -14,10 +14,9 @@ import unittest
 
 from theory_inf.distributions import InputError, fraction_text
 from theory_inf.source import Source
-from theory_inf.uniform import (
-    analyze_uniform, asymptotic, block_types, code_length, entropy,
-    iid_distribution, log_ratio, optimal_error,
-)
+from theory_inf.iid import iid_distribution
+from theory_inf.information import code_length, entropy, log_ratio
+from theory_inf.uniform import analyze_uniform, asymptotic, block_types, optimal_error
 from tools.build_examples import examples
 
 ROOT = Path(__file__).resolve().parents[1]

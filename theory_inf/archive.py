@@ -16,7 +16,7 @@ import zlib
 from theory_inf.distributions import InputError
 from theory_inf.experiment import fraction_record
 from theory_inf.huffman import BitWriter, canonical_codes, code_lengths, decoding_tree
-from theory_inf.uniform import entropy
+from theory_inf.information import entropy
 
 MAGIC = b"ZMH1"
 METADATA = struct.Struct(">4sQQHI")  # magic, исходных байтов, полезных битов, символов, CRC32
@@ -40,6 +40,12 @@ class CorruptArchive(InputError):
 
 @contextmanager
 def atomic_output(path: Path, source: Path):
+    """Выдать временный бинарный поток, опубликовать результат только при успехе.
+
+    Запрещает совпадение с исходником и перезапись существующего пути.
+    При исключении временный файл удаляется; hard link в конце защищает
+    также от появления чужого файла по выходному пути за время операции.
+    """
     if path.resolve() == source.resolve() or (
         path.exists() and source.exists() and path.samefile(source)
     ):
@@ -61,6 +67,11 @@ def atomic_output(path: Path, source: Path):
 
 
 def statistics(frequencies: list[int], lengths: dict[int, int], bits: int, crc: int) -> dict:
+    """Собрать H на байт, среднюю длину, размеры контейнера и коэффициент сжатия.
+
+    bits — полезные биты без заполнения; коэффициент включает заголовок.
+    Для пустого входа H и средняя длина равны 0, коэффициент — None.
+    """
     size = sum(frequencies)
     header = FIXED_HEADER_BYTES + 2 * len(lengths)
     data = (bits + 7) // 8
@@ -81,6 +92,7 @@ def statistics(frequencies: list[int], lengths: dict[int, int], bits: int, crc: 
 
 
 def scan(stream: BinaryIO) -> tuple[list[int], int, int]:
+    """Прочитать поток от текущей позиции до конца: 256 частот, размер и CRC32."""
     counts = Counter()
     checksum = size = 0
     while chunk := stream.read(CHUNK_BYTES):
@@ -91,7 +103,12 @@ def scan(stream: BinaryIO) -> tuple[list[int], int, int]:
 
 
 def compress(source: str | Path, output: str | Path | None = None) -> dict:
-    """Первый проход: частоты и модель. Второй: запись слов и проверка исходника."""
+    """Сжать файл в два прохода и вернуть путь со статистикой.
+
+    Первый проход даёт частоты и модель, второй записывает кодовые слова.
+    Совпадение частот и CRC32 проверяет, что исходник не изменился между
+    проходами. По умолчанию к имени добавляется .zmh; перезапись запрещена.
+    """
     source = Path(source)
     output = Path(output) if output is not None else source.with_name(source.name + ".zmh")
     with source.open("rb") as inp:
@@ -127,6 +144,12 @@ def compress(source: str | Path, output: str | Path | None = None) -> dict:
 
 
 def read_header(inp: BinaryIO) -> tuple[int, int, int, dict[int, int]]:
+    """Прочитать и проверить заголовок; оставить поток в начале кодовых данных.
+
+    Вернуть (исходный размер, полезные биты, CRC32 исходника, длины кодов).
+    Проверяются сигнатура, CRC32 служебных полей, полный размер контейнера
+    и допустимость модели; чужой, обрезанный и повреждённый файлы различаются.
+    """
     header = inp.read(FIXED_HEADER_BYTES)
     if len(header) < len(MAGIC) and MAGIC.startswith(header):
         raise TruncatedArchive("Обрезанный архив: неполная сигнатура")
@@ -175,8 +198,85 @@ def read_header(inp: BinaryIO) -> tuple[int, int, int, dict[int, int]]:
     return size, bits, checksum, lengths
 
 
+def decode_payload(
+    inp: BinaryIO, out: BinaryIO, size: int, bits: int, lengths: dict[int, int],
+) -> tuple[list[int], int]:
+    """Восстановить данные по проверенной модели; вернуть 256 частот и CRC32.
+
+    inp стоит после заголовка, out — временный выходной поток. Пустой вход
+    и один символ обрабатываются без чтения битов; обычный поток читается
+    порциями с проверкой заполнения и границ кодовых слов. Итоговую CRC32
+    с ожидаемой сравнивает verify_result.
+    """
+    frequencies = [0] * 256
+    checksum = produced = 0
+    if not lengths:
+        return frequencies, checksum
+    if len(lengths) == 1:
+        symbol = next(iter(lengths))
+        frequencies[symbol] = size
+        while produced < size:
+            chunk = bytes([symbol]) * min(CHUNK_BYTES, size - produced)
+            out.write(chunk)
+            checksum = zlib.crc32(chunk, checksum)
+            produced += len(chunk)
+        return frequencies, checksum
+
+    tree = decoding_tree(canonical_codes(lengths))
+    node = tree
+    buffer = bytearray()
+    remaining_bits = bits
+    remaining_bytes = (bits + 7) // 8
+    while remaining_bytes:
+        chunk = inp.read(min(CHUNK_BYTES, remaining_bytes))
+        if not chunk:
+            raise TruncatedArchive("Обрезанный архив: поток закончился при чтении данных")
+        remaining_bytes -= len(chunk)
+        for byte in chunk:
+            useful = min(8, remaining_bits)
+            if useful < 8 and byte & ((1 << (8 - useful)) - 1):
+                raise CorruptArchive("Повреждённый архив: ненулевые биты заполнения")
+            # Слева направо: бит 0 ведёт в левую ветвь, 1 — в правую.
+            # Дойдя до листа (int), выдаём байт и возвращаемся к корню.
+            for shift in range(7, 7 - useful, -1):
+                node = node[(byte >> shift) & 1]
+                if isinstance(node, int):
+                    if produced >= size:
+                        raise CorruptArchive("Повреждённый архив: восстановлено больше заявленного размера")
+                    buffer.append(node)
+                    frequencies[node] += 1
+                    produced += 1
+                    node = tree
+            remaining_bits -= useful
+            if len(buffer) >= CHUNK_BYTES:
+                out.write(buffer)
+                checksum = zlib.crc32(buffer, checksum)
+                buffer.clear()
+    if node is not tree or produced != size:
+        raise CorruptArchive("Повреждённый архив: неполное слово или неверный исходный размер")
+    out.write(buffer)
+    checksum = zlib.crc32(buffer, checksum)
+    return frequencies, checksum
+
+
+def verify_result(
+    frequencies: list[int], checksum: int, size: int,
+    expected_crc: int, lengths: dict[int, int],
+) -> None:
+    """Проверить размер, CRC32 и использование модели до публикации файла."""
+    if sum(frequencies) != size or checksum != expected_crc:
+        raise CorruptArchive("Повреждённый архив: CRC32 исходных данных не совпадает")
+    if {a for a, n in enumerate(frequencies) if n} != lengths.keys():
+        raise CorruptArchive("Повреждённый архив: модель содержит неиспользованные символы")
+
+
 def decompress(source: str | Path, output: str | Path | None = None) -> dict:
-    """Проверить заголовок, восстановить байты и сверить CRC32 до публикации файла."""
+    """Прочитать заголовок → декодировать данные → проверить результат.
+
+    Вернуть путь, verified=True и статистику только после успешной проверки.
+    По умолчанию снимается суффикс .zmh, а у иного имени добавляется .out.
+    Конечный файл создаётся после проверок; существующий не перезаписывается.
+    """
     source = Path(source)
     if output is None:
         name = source.name[:-4] if source.name.endswith(".zmh") else source.name + ".out"
@@ -185,55 +285,7 @@ def decompress(source: str | Path, output: str | Path | None = None) -> dict:
         output = Path(output)
     with source.open("rb") as inp:
         size, bits, expected_crc, lengths = read_header(inp)
-        frequencies = [0] * 256
-        checksum = produced = 0
         with atomic_output(output, source) as out:
-            if len(lengths) <= 1:
-                if lengths:
-                    symbol = next(iter(lengths))
-                    frequencies[symbol] = size
-                    while produced < size:
-                        chunk = bytes([symbol]) * min(CHUNK_BYTES, size - produced)
-                        out.write(chunk)
-                        checksum = zlib.crc32(chunk, checksum)
-                        produced += len(chunk)
-            else:
-                tree = decoding_tree(canonical_codes(lengths))
-                node = tree
-                buffer = bytearray()
-                remaining_bits = bits
-                remaining_bytes = (bits + 7) // 8
-                while remaining_bytes:
-                    chunk = inp.read(min(CHUNK_BYTES, remaining_bytes))
-                    if not chunk:
-                        raise TruncatedArchive("Обрезанный архив: поток закончился при чтении данных")
-                    remaining_bytes -= len(chunk)
-                    for byte in chunk:
-                        useful = min(8, remaining_bits)
-                        if useful < 8 and byte & ((1 << (8 - useful)) - 1):
-                            raise CorruptArchive("Повреждённый архив: ненулевые биты заполнения")
-                        # Слева направо: бит 0 ведёт в левую ветвь, 1 — в правую.
-                        # Дойдя до листа (int), выдаём байт и возвращаемся к корню.
-                        for shift in range(7, 7 - useful, -1):
-                            node = node[(byte >> shift) & 1]
-                            if isinstance(node, int):
-                                if produced >= size:
-                                    raise CorruptArchive("Повреждённый архив: восстановлено больше заявленного размера")
-                                buffer.append(node)
-                                frequencies[node] += 1
-                                produced += 1
-                                node = tree
-                        remaining_bits -= useful
-                        if len(buffer) >= CHUNK_BYTES:
-                            out.write(buffer)
-                            checksum = zlib.crc32(buffer, checksum)
-                            buffer.clear()
-                if node is not tree or produced != size:
-                    raise CorruptArchive("Повреждённый архив: неполное слово или неверный исходный размер")
-                out.write(buffer)
-                checksum = zlib.crc32(buffer, checksum)
-            if produced != size or checksum != expected_crc:
-                raise CorruptArchive("Повреждённый архив: CRC32 исходных данных не совпадает")
-            if {a for a, n in enumerate(frequencies) if n} != lengths.keys():
-                raise CorruptArchive("Повреждённый архив: модель содержит неиспользованные символы")
+            frequencies, checksum = decode_payload(inp, out, size, bits, lengths)
+            verify_result(frequencies, checksum, size, expected_crc, lengths)
     return {"output": str(output), "verified": True, **statistics(frequencies, lengths, bits, checksum)}

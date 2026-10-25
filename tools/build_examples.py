@@ -13,6 +13,9 @@ from theory_inf.variant import VARIANT
 
 
 def examples() -> dict[str, dict]:
+    """Вернуть пять описаний источников s=2: iid, периодический, марковский,
+    стационарный неэргодический и детерминированный. Файлы здесь не записываются.
+    """
     if VARIANT.s != 2:
         raise ValueError("Примеры построены для s=2; при смене варианта их нужно пересмотреть")
     symbols = ("A", "B", "C")
@@ -64,6 +67,7 @@ def examples() -> dict[str, dict]:
 
 
 def write(path: Path, value: object) -> None:
+    """Перезаписать UTF-8 JSON-файл с одинаковым форматированием всех примеров."""
     path.write_text(json.dumps(value, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
 
 

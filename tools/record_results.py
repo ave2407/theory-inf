@@ -12,6 +12,7 @@ RESULTS = Path("results/task_1_1")
 
 
 def execute(args: list[str], expected: int = 0) -> subprocess.CompletedProcess:
+    """Выполнить настоящий CLI из корня проекта и проверить ожидаемый код возврата."""
     result = subprocess.run([sys.executable, "main.py", *args], cwd=ROOT,
                             capture_output=True, text=True, timeout=60)
     if result.returncode != expected:
@@ -20,6 +21,11 @@ def execute(args: list[str], expected: int = 0) -> subprocess.CompletedProcess:
 
 
 def main() -> None:
+    """Пересчитать задачу 1.1: сохранить JSON, реализации и её раздел RESULTS.md.
+
+    Следующие разделы результатов сохраняются; неправильный код возврата CLI
+    прерывает сбор вместо включения ошибочного результата в отчёт.
+    """
     (ROOT / RESULTS).mkdir(parents=True, exist_ok=True)
     lines = [
         "# Результаты задачи 1.1", "", "Вариант s=2. Seed=2.", "",

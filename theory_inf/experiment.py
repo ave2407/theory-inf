@@ -12,6 +12,12 @@ TABLE_LENGTHS = (100, 1_000, 10_000, 100_000, 1_000_000)
 def frequencies(
     stream: Iterable[str], word: Sequence[str], checkpoints: Sequence[int],
 ) -> dict[int, Fraction | None]:
+    """Посчитать частоты word на префиксах потока длины checkpoints.
+
+    Учитываются перекрытия, знаменатель равен N−len(word)+1. Если префикс
+    короче блока, его частота равна None. Поток читается до max(checkpoints);
+    используется KMP за O(N+len(word)) времени без хранения реализации.
+    """
     if not word:
         raise InputError("Блок должен содержать хотя бы один символ")
     if not checkpoints or any(type(n) is not int or n <= 0 for n in checkpoints):
@@ -45,12 +51,19 @@ def frequencies(
 
 
 def fraction_record(value: Fraction | None) -> dict | None:
+    """Для JSON вернуть точную строку и приближённый float либо сохранить None."""
     if value is None:
         return None
     return {"fraction": fraction_text(value), "decimal": float(value)}
 
 
 def analyze(source: Source, word: Sequence[str], n: int, seed: int) -> dict:
+    """Сравнить точные вероятности блока с частотами одной реализации.
+
+    Результат содержит частоту при N=n и таблицу для TABLE_LENGTHS.
+    Ради всей таблицы генерируется max(n, max(TABLE_LENGTHS)) символов;
+    меньшие длины используют префиксы той же реализации с данным seed.
+    """
     if not word:
         raise InputError("Блок должен содержать хотя бы один символ")
     if n <= 0 or n < len(word):
