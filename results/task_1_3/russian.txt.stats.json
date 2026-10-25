@@ -1,0 +1,17 @@
+{
+  "output": "results/task_1_3/russian.txt.zmh",
+  "original_bytes": 14920,
+  "model_symbols": 38,
+  "entropy_bits_per_byte": "3.8345465888660002077358712847085320970736570135408418903956998562197885957270100",
+  "average_code_length_bits": {
+    "fraction": "1448/373",
+    "decimal": 3.8820375335120643
+  },
+  "header_bytes": 106,
+  "data_bytes": 7240,
+  "payload_bits": 57920,
+  "archive_bytes": 7346,
+  "compression_ratio": 0.4923592493297587,
+  "ratio_definition": "archive_bytes/original_bytes",
+  "original_crc32": "0c288693"
+}

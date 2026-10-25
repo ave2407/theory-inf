@@ -81,8 +81,12 @@ def main():
               "Этот вход проверяет требование k≤5 и отличается от собственного варианта k=3.",
               "Подробности замера — `results/task_1_2/timing.json`. Время не включается в детерминированные результаты.", ""]
     results = ROOT / "RESULTS.md"
-    first_part = results.read_text(encoding="utf-8").split(MARKER, 1)[0].rstrip()
-    results.write_text(first_part + "\n\n" + "\n".join(lines).rstrip() + "\n", encoding="utf-8")
+    previous = results.read_text(encoding="utf-8")
+    first_part = previous.split(MARKER, 1)[0].rstrip()
+    next_marker = "# Результаты задачи 1.3"
+    following = next_marker + previous.split(next_marker, 1)[1] if next_marker in previous else ""
+    results.write_text(first_part + "\n\n" + "\n".join(lines).rstrip() + "\n" +
+                       ("\n" + following if following else ""), encoding="utf-8")
     (ROOT / DIRECTORY / "summary.txt").write_text("\n".join(summary) + "\n", encoding="utf-8")
     print(f"k=5, n_max=50: {seconds:.3f} с; лимит 10 с: {timing['within_10_seconds']}")
 

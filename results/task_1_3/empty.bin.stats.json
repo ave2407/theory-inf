@@ -1,0 +1,17 @@
+{
+  "output": "results/task_1_3/empty.bin.zmh",
+  "original_bytes": 0,
+  "model_symbols": 0,
+  "entropy_bits_per_byte": "0",
+  "average_code_length_bits": {
+    "fraction": "0",
+    "decimal": 0.0
+  },
+  "header_bytes": 30,
+  "data_bytes": 0,
+  "payload_bits": 0,
+  "archive_bytes": 30,
+  "compression_ratio": null,
+  "ratio_definition": "archive_bytes/original_bytes",
+  "original_crc32": "00000000"
+}

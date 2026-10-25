@@ -1,0 +1,8 @@
+{
+  "reference_url": "https://github.com/nayuki/Reference-Huffman-coding/blob/master/python/huffmancoding.py",
+  "reference_sha256": "3336cf2665f3428f91e2161781827ac1836d3cdc24d7efeafdce60268cb51169",
+  "seed": 2,
+  "cases": 52,
+  "all_equal": true,
+  "scope": "Длины и канонические слова при минимум двух символах; вырожденные случаи изменены намеренно"
+}

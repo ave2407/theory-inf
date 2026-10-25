@@ -1,0 +1,17 @@
+{
+  "output": "results/task_1_3/konstituciya_rossiyskoy_federacii.pdf.zmh",
+  "original_bytes": 3608472,
+  "model_symbols": 256,
+  "entropy_bits_per_byte": "7.7312145252000420256921971653304888349931750609251557746506418508643652074690207",
+  "average_code_length_bits": {
+    "fraction": "14004071/1804236",
+    "decimal": 7.76177340436617
+  },
+  "header_bytes": 542,
+  "data_bytes": 3501018,
+  "payload_bits": 28008142,
+  "archive_bytes": 3501560,
+  "compression_ratio": 0.9703719469071673,
+  "ratio_definition": "archive_bytes/original_bytes",
+  "original_crc32": "88a45886"
+}

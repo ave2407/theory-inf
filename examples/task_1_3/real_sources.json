@@ -1,0 +1,25 @@
+[
+  {
+    "file": "attention_is_all_you_need.pdf",
+    "source_url": "https://arxiv.org/pdf/1706.03762v7",
+    "landing_url": "https://arxiv.org/abs/1706.03762",
+    "version": "arXiv:1706.03762v7",
+    "retrieved_on": "2026-10-25",
+    "preparation": "Original PDF bytes, unchanged",
+    "bytes": 2215244,
+    "sha256": "bdfaa68d8984f0dc02beaca527b76f207d99b666d31d1da728ee0728182df697",
+    "pages": 15
+  },
+  {
+    "file": "konstituciya_rossiyskoy_federacii.pdf",
+    "source": "User-provided local PDF",
+    "source_url": null,
+    "received_on": "2026-10-25",
+    "version": "Edition not identified",
+    "preparation": "Original PDF bytes, unchanged; image-only PDF",
+    "bytes": 3608472,
+    "sha256": "02599c8c149dcd94ed3d284c6ff0ec3669c20a62fad8b061479dc63d649e0393",
+    "pages": 55,
+    "text_layer": false
+  }
+]

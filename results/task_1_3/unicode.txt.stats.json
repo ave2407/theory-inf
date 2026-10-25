@@ -1,0 +1,17 @@
+{
+  "output": "results/task_1_3/unicode.txt.zmh",
+  "original_bytes": 4200,
+  "model_symbols": 46,
+  "entropy_bits_per_byte": "5.0463151943603265490895688659774298987223738900239587973700752169312084897761938",
+  "average_code_length_bits": {
+    "fraction": "178/35",
+    "decimal": 5.085714285714285
+  },
+  "header_bytes": 122,
+  "data_bytes": 2670,
+  "payload_bits": 21360,
+  "archive_bytes": 2792,
+  "compression_ratio": 0.6647619047619048,
+  "ratio_definition": "archive_bytes/original_bytes",
+  "original_crc32": "c8f5e94c"
+}

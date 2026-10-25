@@ -1,0 +1,17 @@
+{
+  "output": "results/task_1_3/english.txt.zmh",
+  "original_bytes": 8200,
+  "model_symbols": 29,
+  "entropy_bits_per_byte": "4.2201557414433781337045425434650581830097011120053159935551062903116573945242465",
+  "average_code_length_bits": {
+    "fraction": "872/205",
+    "decimal": 4.253658536585366
+  },
+  "header_bytes": 88,
+  "data_bytes": 4360,
+  "payload_bits": 34880,
+  "archive_bytes": 4448,
+  "compression_ratio": 0.5424390243902439,
+  "ratio_definition": "archive_bytes/original_bytes",
+  "original_crc32": "0f4aa9b2"
+}

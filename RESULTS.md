@@ -326,3 +326,266 @@ Python 3.13.13. `python3 tools/record_uniform_results.py`.
 Измерен полный CLI-процесс: чтение и проверка источника, 50 строк таблицы, сохранение кода и вывод JSON.
 Этот вход проверяет требование k≤5 и отличается от собственного варианта k=3.
 Подробности замера — `results/task_1_2/timing.json`. Время не включается в детерминированные результаты.
+
+# Результаты задачи 1.3
+
+Python 3.13.13. Воспроизведение: `python3 tools/record_archive_results.py`.
+
+PNG синтетический, создан tools/build_archive_examples.py с seed=2. Контрольные тексты собственные, UTF-8.
+Реальные документы и происхождение: `examples/task_1_3/real_sources.json`.
+
+Проверка восстановления выполнена побайтовым сравнением и SHA-256.
+
+## russian.txt
+
+`python3 main.py compress examples/task_1_3/russian.txt --output results/task_1_3/russian.txt.zmh --stats`
+
+```json
+{
+  "output": "results/task_1_3/russian.txt.zmh",
+  "original_bytes": 14920,
+  "model_symbols": 38,
+  "entropy_bits_per_byte": "3.8345465888660002077358712847085320970736570135408418903956998562197885957270100",
+  "average_code_length_bits": {
+    "fraction": "1448/373",
+    "decimal": 3.8820375335120643
+  },
+  "header_bytes": 106,
+  "data_bytes": 7240,
+  "payload_bits": 57920,
+  "archive_bytes": 7346,
+  "compression_ratio": 0.4923592493297587,
+  "ratio_definition": "archive_bytes/original_bytes",
+  "original_crc32": "0c288693"
+}
+```
+
+Восстановление: CRC32 пройдена; байты совпали; SHA-256 `01a085798196e7321d4ae6270df50169bc08f637422f854f06f164e17b462ce2`.
+
+## english.txt
+
+`python3 main.py compress examples/task_1_3/english.txt --output results/task_1_3/english.txt.zmh --stats`
+
+```json
+{
+  "output": "results/task_1_3/english.txt.zmh",
+  "original_bytes": 8200,
+  "model_symbols": 29,
+  "entropy_bits_per_byte": "4.2201557414433781337045425434650581830097011120053159935551062903116573945242465",
+  "average_code_length_bits": {
+    "fraction": "872/205",
+    "decimal": 4.253658536585366
+  },
+  "header_bytes": 88,
+  "data_bytes": 4360,
+  "payload_bits": 34880,
+  "archive_bytes": 4448,
+  "compression_ratio": 0.5424390243902439,
+  "ratio_definition": "archive_bytes/original_bytes",
+  "original_crc32": "0f4aa9b2"
+}
+```
+
+Восстановление: CRC32 пройдена; байты совпали; SHA-256 `c223dd09e29da3c91f3ea1195e6b44ff997e60a88da72f224bb6b31e97a207d0`.
+
+## image.png
+
+`python3 main.py compress examples/task_1_3/image.png --output results/task_1_3/image.png.zmh --stats`
+
+```json
+{
+  "output": "results/task_1_3/image.png.zmh",
+  "original_bytes": 49363,
+  "model_symbols": 256,
+  "entropy_bits_per_byte": "7.9946241285851985056375690249887657694694348328213069144802318738032120770368004",
+  "average_code_length_bits": {
+    "fraction": "394869/49363",
+    "decimal": 7.999290966918542
+  },
+  "header_bytes": 542,
+  "data_bytes": 49359,
+  "payload_bits": 394869,
+  "archive_bytes": 49901,
+  "compression_ratio": 1.0108988513664081,
+  "ratio_definition": "archive_bytes/original_bytes",
+  "original_crc32": "6d9f5a6e"
+}
+```
+
+Восстановление: CRC32 пройдена; байты совпали; SHA-256 `2dbf9a80afe6bfc9b3aaf08ee07e8541b28533fdeeba4937f0924948550d79cc`.
+
+## repeated.bin
+
+`python3 main.py compress examples/task_1_3/repeated.bin --output results/task_1_3/repeated.bin.zmh --stats`
+
+```json
+{
+  "output": "results/task_1_3/repeated.bin.zmh",
+  "original_bytes": 4096,
+  "model_symbols": 1,
+  "entropy_bits_per_byte": "0",
+  "average_code_length_bits": {
+    "fraction": "0",
+    "decimal": 0.0
+  },
+  "header_bytes": 32,
+  "data_bytes": 0,
+  "payload_bits": 0,
+  "archive_bytes": 32,
+  "compression_ratio": 0.0078125,
+  "ratio_definition": "archive_bytes/original_bytes",
+  "original_crc32": "fea63440"
+}
+```
+
+Восстановление: CRC32 пройдена; байты совпали; SHA-256 `6896d9ea3f73a4434f5832bc65714e7d066f177373f36f34dc8a6f735daa41b1`.
+
+## empty.bin
+
+`python3 main.py compress examples/task_1_3/empty.bin --output results/task_1_3/empty.bin.zmh --stats`
+
+```json
+{
+  "output": "results/task_1_3/empty.bin.zmh",
+  "original_bytes": 0,
+  "model_symbols": 0,
+  "entropy_bits_per_byte": "0",
+  "average_code_length_bits": {
+    "fraction": "0",
+    "decimal": 0.0
+  },
+  "header_bytes": 30,
+  "data_bytes": 0,
+  "payload_bits": 0,
+  "archive_bytes": 30,
+  "compression_ratio": null,
+  "ratio_definition": "archive_bytes/original_bytes",
+  "original_crc32": "00000000"
+}
+```
+
+Восстановление: CRC32 пройдена; байты совпали; SHA-256 `e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855`.
+
+## unicode.txt
+
+`python3 main.py compress examples/task_1_3/unicode.txt --output results/task_1_3/unicode.txt.zmh --stats`
+
+```json
+{
+  "output": "results/task_1_3/unicode.txt.zmh",
+  "original_bytes": 4200,
+  "model_symbols": 46,
+  "entropy_bits_per_byte": "5.0463151943603265490895688659774298987223738900239587973700752169312084897761938",
+  "average_code_length_bits": {
+    "fraction": "178/35",
+    "decimal": 5.085714285714285
+  },
+  "header_bytes": 122,
+  "data_bytes": 2670,
+  "payload_bits": 21360,
+  "archive_bytes": 2792,
+  "compression_ratio": 0.6647619047619048,
+  "ratio_definition": "archive_bytes/original_bytes",
+  "original_crc32": "c8f5e94c"
+}
+```
+
+Восстановление: CRC32 пройдена; байты совпали; SHA-256 `b8c623d2ce52507b17f2e81dde20fde2ac7fd6ed0d94d221ec7b7871149bb43a`.
+
+## all_bytes.bin
+
+`python3 main.py compress examples/task_1_3/all_bytes.bin --output results/task_1_3/all_bytes.bin.zmh --stats`
+
+```json
+{
+  "output": "results/task_1_3/all_bytes.bin.zmh",
+  "original_bytes": 2048,
+  "model_symbols": 256,
+  "entropy_bits_per_byte": "8",
+  "average_code_length_bits": {
+    "fraction": "8",
+    "decimal": 8.0
+  },
+  "header_bytes": 542,
+  "data_bytes": 2048,
+  "payload_bits": 16384,
+  "archive_bytes": 2590,
+  "compression_ratio": 1.2646484375,
+  "ratio_definition": "archive_bytes/original_bytes",
+  "original_crc32": "9f5edd58"
+}
+```
+
+Восстановление: CRC32 пройдена; байты совпали; SHA-256 `10fc3c51a152e90e5b90319b601d92ccf37290ef53c35ff92507687d8a911a08`.
+
+## attention_is_all_you_need.pdf
+
+`python3 main.py compress examples/task_1_3/attention_is_all_you_need.pdf --output results/task_1_3/attention_is_all_you_need.pdf.zmh --stats`
+
+```json
+{
+  "output": "results/task_1_3/attention_is_all_you_need.pdf.zmh",
+  "original_bytes": 2215244,
+  "model_symbols": 256,
+  "entropy_bits_per_byte": "7.0719287570114142662778334382981720968773099354419949996065069296236788075007036",
+  "average_code_length_bits": {
+    "fraction": "15731333/2215244",
+    "decimal": 7.101399665228751
+  },
+  "header_bytes": 542,
+  "data_bytes": 1966417,
+  "payload_bits": 15731333,
+  "archive_bytes": 1966959,
+  "compression_ratio": 0.8879197957425908,
+  "ratio_definition": "archive_bytes/original_bytes",
+  "original_crc32": "53acdb7e"
+}
+```
+
+Восстановление: CRC32 пройдена; байты совпали; SHA-256 `bdfaa68d8984f0dc02beaca527b76f207d99b666d31d1da728ee0728182df697`.
+
+## konstituciya_rossiyskoy_federacii.pdf
+
+`python3 main.py compress examples/task_1_3/konstituciya_rossiyskoy_federacii.pdf --output results/task_1_3/konstituciya_rossiyskoy_federacii.pdf.zmh --stats`
+
+```json
+{
+  "output": "results/task_1_3/konstituciya_rossiyskoy_federacii.pdf.zmh",
+  "original_bytes": 3608472,
+  "model_symbols": 256,
+  "entropy_bits_per_byte": "7.7312145252000420256921971653304888349931750609251557746506418508643652074690207",
+  "average_code_length_bits": {
+    "fraction": "14004071/1804236",
+    "decimal": 7.76177340436617
+  },
+  "header_bytes": 542,
+  "data_bytes": 3501018,
+  "payload_bits": 28008142,
+  "archive_bytes": 3501560,
+  "compression_ratio": 0.9703719469071673,
+  "ratio_definition": "archive_bytes/original_bytes",
+  "original_crc32": "88a45886"
+}
+```
+
+Восстановление: CRC32 пройдена; байты совпали; SHA-256 `02599c8c149dcd94ed3d284c6ff0ec3669c20a62fad8b061479dc63d649e0393`.
+
+## Диагностика
+
+- `foreign.zmh`: код 2, Ошибка: Чужой формат: ожидается сигнатура ZMH1
+- `truncated.zmh`: код 2, Ошибка: Обрезанный архив: не хватает модели или сжатых данных
+- `corrupted.zmh`: код 2, Ошибка: Повреждённый архив: неполное слово или неверный исходный размер
+
+## Сводная таблица
+
+| Файл | Исходных байтов | H, бит/байт | Средняя длина, бит | Заголовок | Данные | Архив | Архив / исходник |
+|---|---:|---:|---:|---:|---:|---:|---:|
+| russian.txt | 14920 | 3.834547 | 3.882038 | 106 | 7240 | 7346 | 0.492359 |
+| english.txt | 8200 | 4.220156 | 4.253659 | 88 | 4360 | 4448 | 0.542439 |
+| image.png | 49363 | 7.994624 | 7.999291 | 542 | 49359 | 49901 | 1.010899 |
+| repeated.bin | 4096 | 0.000000 | 0.000000 | 32 | 0 | 32 | 0.007812 |
+| empty.bin | 0 | 0.000000 | 0.000000 | 30 | 0 | 30 | — |
+| unicode.txt | 4200 | 5.046315 | 5.085714 | 122 | 2670 | 2792 | 0.664762 |
+| all_bytes.bin | 2048 | 8.000000 | 8.000000 | 542 | 2048 | 2590 | 1.264648 |
+| attention_is_all_you_need.pdf | 2215244 | 7.071929 | 7.101400 | 542 | 1966417 | 1966959 | 0.887920 |
+| konstituciya_rossiyskoy_federacii.pdf | 3608472 | 7.731215 | 7.761773 | 542 | 3501018 | 3501560 | 0.970372 |

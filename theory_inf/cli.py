@@ -1,4 +1,4 @@
-"""Неинтерактивные режимы задач 1.1 и 1.2."""
+"""Неинтерактивные режимы ДЗ №1."""
 
 import argparse
 from itertools import islice
@@ -11,6 +11,7 @@ from theory_inf.experiment import analyze
 from theory_inf.source import Source, read_json
 from theory_inf.variant import VARIANT
 from theory_inf.uniform import analyze_uniform, entropy, iid_distribution
+from theory_inf.archive import compress, decompress
 
 
 def length(value: str) -> int | None:
@@ -50,6 +51,12 @@ def parser() -> argparse.ArgumentParser:
     uniform.add_argument("--n-max", type=int, default=50)
     uniform.add_argument("--code-output", default="code.json", help="описание кода, по умолчанию code.json")
     uniform.add_argument("--output", help="таблица JSON вместо stdout")
+    for name, help_text in [("compress", "двухпроходное сжатие файла в .zmh"),
+                            ("decompress", "восстановление .zmh с проверкой CRC32")]:
+        archive = commands.add_parser(name, help=help_text)
+        archive.add_argument("source", help="путь к входному файлу")
+        archive.add_argument("--output", help="выходной файл; существующий файл не перезаписывается")
+        archive.add_argument("--stats", action="store_true", help="вывести статистику сжатия")
     return result
 
 
@@ -65,7 +72,14 @@ def run(args: argparse.Namespace, argument_parser: argparse.ArgumentParser) -> N
         print(json.dumps(VARIANT.as_dict(), ensure_ascii=False, indent=2))
         return
     if args.command is None:
-        argument_parser.error("Укажите generate, analyze, entropy, uniform или --variant")
+        argument_parser.error("Укажите команду или --variant; список команд: --help")
+    if args.command in {"compress", "decompress"}:
+        operation = compress if args.command == "compress" else decompress
+        data = operation(args.source, args.output)
+        if not args.stats:
+            data = {key: value for key, value in data.items() if key in {"output", "verified"}}
+        sys.stdout.write(json_text(data))
+        return
     inputs = [Path(args.source)]
     if args.command == "analyze" and args.word_file:
         inputs.append(Path(args.word_file))

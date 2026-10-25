@@ -1,0 +1,17 @@
+{
+  "output": "results/task_1_3/repeated.bin.zmh",
+  "original_bytes": 4096,
+  "model_symbols": 1,
+  "entropy_bits_per_byte": "0",
+  "average_code_length_bits": {
+    "fraction": "0",
+    "decimal": 0.0
+  },
+  "header_bytes": 32,
+  "data_bytes": 0,
+  "payload_bits": 0,
+  "archive_bytes": 32,
+  "compression_ratio": 0.0078125,
+  "ratio_definition": "archive_bytes/original_bytes",
+  "original_crc32": "fea63440"
+}

@@ -1,0 +1,17 @@
+{
+  "output": "results/task_1_3/image.png.zmh",
+  "original_bytes": 49363,
+  "model_symbols": 256,
+  "entropy_bits_per_byte": "7.9946241285851985056375690249887657694694348328213069144802318738032120770368004",
+  "average_code_length_bits": {
+    "fraction": "394869/49363",
+    "decimal": 7.999290966918542
+  },
+  "header_bytes": 542,
+  "data_bytes": 49359,
+  "payload_bits": 394869,
+  "archive_bytes": 49901,
+  "compression_ratio": 1.0108988513664081,
+  "ratio_definition": "archive_bytes/original_bytes",
+  "original_crc32": "6d9f5a6e"
+}

@@ -1,0 +1,74 @@
+[
+  {
+    "input": "examples/task_1_3/russian.txt",
+    "archive": "results/task_1_3/russian.txt.zmh",
+    "sha256_original": "01a085798196e7321d4ae6270df50169bc08f637422f854f06f164e17b462ce2",
+    "sha256_restored": "01a085798196e7321d4ae6270df50169bc08f637422f854f06f164e17b462ce2",
+    "byte_equal": true,
+    "crc_verified": true
+  },
+  {
+    "input": "examples/task_1_3/english.txt",
+    "archive": "results/task_1_3/english.txt.zmh",
+    "sha256_original": "c223dd09e29da3c91f3ea1195e6b44ff997e60a88da72f224bb6b31e97a207d0",
+    "sha256_restored": "c223dd09e29da3c91f3ea1195e6b44ff997e60a88da72f224bb6b31e97a207d0",
+    "byte_equal": true,
+    "crc_verified": true
+  },
+  {
+    "input": "examples/task_1_3/image.png",
+    "archive": "results/task_1_3/image.png.zmh",
+    "sha256_original": "2dbf9a80afe6bfc9b3aaf08ee07e8541b28533fdeeba4937f0924948550d79cc",
+    "sha256_restored": "2dbf9a80afe6bfc9b3aaf08ee07e8541b28533fdeeba4937f0924948550d79cc",
+    "byte_equal": true,
+    "crc_verified": true
+  },
+  {
+    "input": "examples/task_1_3/repeated.bin",
+    "archive": "results/task_1_3/repeated.bin.zmh",
+    "sha256_original": "6896d9ea3f73a4434f5832bc65714e7d066f177373f36f34dc8a6f735daa41b1",
+    "sha256_restored": "6896d9ea3f73a4434f5832bc65714e7d066f177373f36f34dc8a6f735daa41b1",
+    "byte_equal": true,
+    "crc_verified": true
+  },
+  {
+    "input": "examples/task_1_3/empty.bin",
+    "archive": "results/task_1_3/empty.bin.zmh",
+    "sha256_original": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "sha256_restored": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "byte_equal": true,
+    "crc_verified": true
+  },
+  {
+    "input": "examples/task_1_3/unicode.txt",
+    "archive": "results/task_1_3/unicode.txt.zmh",
+    "sha256_original": "b8c623d2ce52507b17f2e81dde20fde2ac7fd6ed0d94d221ec7b7871149bb43a",
+    "sha256_restored": "b8c623d2ce52507b17f2e81dde20fde2ac7fd6ed0d94d221ec7b7871149bb43a",
+    "byte_equal": true,
+    "crc_verified": true
+  },
+  {
+    "input": "examples/task_1_3/all_bytes.bin",
+    "archive": "results/task_1_3/all_bytes.bin.zmh",
+    "sha256_original": "10fc3c51a152e90e5b90319b601d92ccf37290ef53c35ff92507687d8a911a08",
+    "sha256_restored": "10fc3c51a152e90e5b90319b601d92ccf37290ef53c35ff92507687d8a911a08",
+    "byte_equal": true,
+    "crc_verified": true
+  },
+  {
+    "input": "examples/task_1_3/attention_is_all_you_need.pdf",
+    "archive": "results/task_1_3/attention_is_all_you_need.pdf.zmh",
+    "sha256_original": "bdfaa68d8984f0dc02beaca527b76f207d99b666d31d1da728ee0728182df697",
+    "sha256_restored": "bdfaa68d8984f0dc02beaca527b76f207d99b666d31d1da728ee0728182df697",
+    "byte_equal": true,
+    "crc_verified": true
+  },
+  {
+    "input": "examples/task_1_3/konstituciya_rossiyskoy_federacii.pdf",
+    "archive": "results/task_1_3/konstituciya_rossiyskoy_federacii.pdf.zmh",
+    "sha256_original": "02599c8c149dcd94ed3d284c6ff0ec3669c20a62fad8b061479dc63d649e0393",
+    "sha256_restored": "02599c8c149dcd94ed3d284c6ff0ec3669c20a62fad8b061479dc63d649e0393",
+    "byte_equal": true,
+    "crc_verified": true
+  }
+]

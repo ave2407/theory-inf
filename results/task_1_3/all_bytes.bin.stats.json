@@ -1,0 +1,17 @@
+{
+  "output": "results/task_1_3/all_bytes.bin.zmh",
+  "original_bytes": 2048,
+  "model_symbols": 256,
+  "entropy_bits_per_byte": "8",
+  "average_code_length_bits": {
+    "fraction": "8",
+    "decimal": 8.0
+  },
+  "header_bytes": 542,
+  "data_bytes": 2048,
+  "payload_bits": 16384,
+  "archive_bytes": 2590,
+  "compression_ratio": 1.2646484375,
+  "ratio_definition": "archive_bytes/original_bytes",
+  "original_crc32": "9f5edd58"
+}

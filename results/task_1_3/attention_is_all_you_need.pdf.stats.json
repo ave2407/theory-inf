@@ -1,0 +1,17 @@
+{
+  "output": "results/task_1_3/attention_is_all_you_need.pdf.zmh",
+  "original_bytes": 2215244,
+  "model_symbols": 256,
+  "entropy_bits_per_byte": "7.0719287570114142662778334382981720968773099354419949996065069296236788075007036",
+  "average_code_length_bits": {
+    "fraction": "15731333/2215244",
+    "decimal": 7.101399665228751
+  },
+  "header_bytes": 542,
+  "data_bytes": 1966417,
+  "payload_bits": 15731333,
+  "archive_bytes": 1966959,
+  "compression_ratio": 0.8879197957425908,
+  "ratio_definition": "archive_bytes/original_bytes",
+  "original_crc32": "53acdb7e"
+}

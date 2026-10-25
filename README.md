@@ -8,6 +8,8 @@ python3 main.py generate examples/task_1_1/periodic.json --n 20 --seed 2
 python3 main.py analyze examples/task_1_1/periodic.json --n 10000 --word A B --seed 2
 python3 main.py entropy examples/task_1_2/iid.json
 python3 main.py uniform examples/task_1_2/iid.json --rate 2 --n-max 50 --code-output code.json
+python3 main.py compress examples/task_1_3/unicode.txt --output /tmp/unicode.txt.zmh --stats
+python3 main.py decompress /tmp/unicode.txt.zmh --output /tmp/unicode-restored.txt --stats
 python3 -m unittest discover -v
 ```
 
@@ -37,3 +39,25 @@ python3 tools/record_uniform_results.py
 ```
 
 Таблицы — `RESULTS.md`, полные JSON — `results/task_1_2/`.
+
+`compress` сжимает бинарный файл в два прохода; без `--output` создаёт
+`исходное_имя.zmh` (например, `input.txt.zmh`). `decompress` восстанавливает
+байты и проверяет целостность; без `--output` удаляет последний суффикс `.zmh`.
+Оба режима отказываются перезаписывать существующие файлы. Для вывода
+энтропии, средней длины, размеров заголовка/данных и коэффициента сжатия
+используется `--stats`. Модель — канонический Хаффман, формат — `docs/ZMH_FORMAT.md`.
+Unicode обрабатывается как байты; кодировка и нормализация не меняются.
+
+Воспроизведение входов и измерений архиватора:
+
+```sh
+python3 tools/build_archive_examples.py --seed 2
+python3 tools/record_archive_results.py
+```
+
+Входы и ошибочные архивы — `examples/task_1_3/`, результаты и read-back —
+`results/task_1_3/`. Происхождение адаптации Nayuki и лицензия описаны в `SOURCES.md`.
+В реальный корпус также входят оригинальный PDF Attention Is All You Need
+и предоставленный пользователем PDF Конституции РФ. Конституция — 55-страничный
+скан без текстового слоя; архивируются исходные байты PDF.
+Происхождение и SHA-256 — `examples/task_1_3/real_sources.json`.
