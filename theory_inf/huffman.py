@@ -11,6 +11,7 @@ from theory_inf.distributions import InputError
 
 
 def code_lengths(frequencies: list[int]) -> dict[int, int]:
+    """Слить два самых лёгких поддерева, затем вернуть глубину каждого листа."""
     if len(frequencies) != 256 or any(type(n) is not int or n < 0 for n in frequencies):
         raise InputError("Нужны 256 неотрицательных целых частот байтов")
     queue = [(freq, symbol, symbol) for symbol, freq in enumerate(frequencies) if freq]
@@ -21,9 +22,11 @@ def code_lengths(frequencies: list[int]) -> dict[int, int]:
         return {queue[0][1]: 0}
     # Минимальный символ поддерева разрешает равенство весов детерминированно.
     while len(queue) > 1:
-        left = heapq.heappop(queue)
-        right = heapq.heappop(queue)
-        heapq.heappush(queue, (left[0] + right[0], min(left[1], right[1]), (left[2], right[2])))
+        left_weight, left_min_symbol, left_tree = heapq.heappop(queue)
+        right_weight, right_min_symbol, right_tree = heapq.heappop(queue)
+        combined_weight = left_weight + right_weight
+        min_symbol = min(left_min_symbol, right_min_symbol)
+        heapq.heappush(queue, (combined_weight, min_symbol, (left_tree, right_tree)))
     lengths = {}
     stack = [(queue[0][2], 0)]
     while stack:
@@ -37,7 +40,12 @@ def code_lengths(frequencies: list[int]) -> dict[int, int]:
 
 
 def canonical_codes(lengths: dict[int, int]) -> dict[int, tuple[int, int]]:
-    """Байт → (целочисленное кодовое слово, число его битов)."""
+    """Байт → (слово как целое число, длина в битах).
+
+    Для длин A:1, B:2, C:2 получатся A:0, B:10, C:11.
+    При переходе к большей длине приписываем нули справа;
+    следующее слово той же длины получаем прибавлением единицы.
+    """
     if any(type(a) is not int or not 0 <= a <= 255 or
            type(n) is not int or not 0 <= n <= 255 for a, n in lengths.items()):
         raise InputError("Некорректный символ или длина кода")
@@ -89,6 +97,7 @@ class BitWriter:
         self.total_bits = 0
 
     def write(self, code: int, length: int) -> None:
+        # pending хранит ещё не выведенный хвост, pending_bits — его длину.
         self.pending = (self.pending << length) | code
         self.pending_bits += length
         self.total_bits += length

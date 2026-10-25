@@ -11,7 +11,12 @@ from theory_inf.source import Source
 
 
 class LinearSpan:
-    """Точный ступенчатый базис; зависимые векторы больше не расширяем."""
+    """Базис методом Гаусса. add возвращает True только для нового направления.
+
+    Линейные равенства достаточно проверять на базисе: для любой линейной
+    комбинации они выполнятся автоматически. Это завершает проверку потока
+    после конечного числа векторов вместо перебора всех префиксов.
+    """
 
     def __init__(self):
         self.rows: dict[int, list[Fraction]] = {}
@@ -30,7 +35,13 @@ class LinearSpan:
 
 
 def iid_distribution(source: Source) -> dict[str, Fraction]:
-    """Проверить iid-закон на всём потоке, а не на фиксированном числе тактов."""
+    """Проверить iid-закон на всём потоке, а не на фиксированном числе тактов.
+
+    Координата вектора — масса пары (состояние, фаза). step(v, a) переносит
+    её после выдачи a; сумма координат равна вероятности префикса с a.
+    Для iid должно быть sum(step(v, a)) == sum(v) * P(a) для любого
+    достижимого v. Операции линейны, поэтому достаточно достижимого базиса.
+    """
     states = sorted(source.schedules)
     indices = {(state, phase): i for i, (state, phase) in
                enumerate((s, p) for s in states for p in range(source.period))}
@@ -175,6 +186,7 @@ def rate_relation(rate: Fraction | None, distribution: dict[str, Fraction]) -> i
 
 
 def code_length(n: int, rate: Fraction | None, distribution: dict[str, Fraction], q: int) -> int:
+    """ℓ = floor(n·R/log₂(q)); rate=None обозначает точное R=H."""
     if rate == 0:
         return 0
     exact = exact_entropy(distribution) if rate is None else rate
@@ -204,17 +216,25 @@ def code_length(n: int, rate: Fraction | None, distribution: dict[str, Fraction]
 
 
 def block_types(weights: tuple[int, ...], n: int) -> list[tuple[int, tuple[int, ...], int]]:
-    """(Числитель вероятности блока, тип, мощность типа), по убыванию вероятности."""
+    """Вернуть (числитель P одного блока, тип, число блоков этого типа).
+
+    Если p_i = weights[i]/D, у типа (n_1,...,n_k) вероятность каждого
+    блока равна ∏weights[i]**n_i / D**n, мощность — n!/(n_1!···n_k!).
+    Сортировка идёт по вероятности одного блока, а не сумме по типу.
+    """
     powers = [[w ** i for i in range(n + 1)] for w in weights]
     result = []
 
-    def visit(i: int, remaining: int, probability: int, size: int, counts: tuple[int, ...]):
+    def visit(i: int, remaining: int, probability_numerator: int,
+              multiplicity: int, counts: tuple[int, ...]):
         if i == len(weights) - 1:
-            result.append((probability * powers[i][remaining], (*counts, remaining), size))
+            result.append((probability_numerator * powers[i][remaining],
+                           (*counts, remaining), multiplicity))
             return
         for count in range(remaining + 1):
-            visit(i + 1, remaining - count, probability * powers[i][count],
-                  size * comb(remaining, count), (*counts, count))
+            # Из ещё свободных позиций выбираем count мест для символа i.
+            visit(i + 1, remaining - count, probability_numerator * powers[i][count],
+                  multiplicity * comb(remaining, count), (*counts, count))
 
     visit(0, n, 1, 1, ())
     result.sort(key=lambda item: (-item[0], item[1]))
@@ -222,6 +242,7 @@ def block_types(weights: tuple[int, ...], n: int) -> list[tuple[int, tuple[int, 
 
 
 def optimal_error(distribution: dict[str, Fraction], n: int, q: int, length: int) -> tuple[Fraction, int]:
+    """Выбрать до q**length наиболее вероятных блоков; вернуть (P_e, их число)."""
     positive = [p for p in distribution.values() if p]
     total_blocks = len(positive) ** n
     # Не вычислять q**length, когда уже известно, что все блоки помещаются.
@@ -236,14 +257,15 @@ def optimal_error(distribution: dict[str, Fraction], n: int, q: int, length: int
     denominator = lcm(*(p.denominator for p in positive))
     weights = tuple(p.numerator * (denominator // p.denominator) for p in positive)
     remaining = capacity
-    covered = 0
-    for probability, _, size in block_types(weights, n):
-        taken = min(remaining, size)
-        covered += taken * probability
+    covered_numerator = 0
+    for probability_numerator, _, multiplicity in block_types(weights, n):
+        taken = min(remaining, multiplicity)
+        covered_numerator += taken * probability_numerator
         remaining -= taken
         if not remaining:
             break
-    return Fraction(denominator ** n - covered, denominator ** n), capacity
+    block_denominator = denominator ** n
+    return Fraction(block_denominator - covered_numerator, block_denominator), capacity
 
 
 def asymptotic(distribution: dict[str, Fraction], rate: Fraction | None,

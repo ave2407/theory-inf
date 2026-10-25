@@ -19,7 +19,7 @@ from theory_inf.huffman import BitWriter, canonical_codes, code_lengths, decodin
 from theory_inf.uniform import entropy
 
 MAGIC = b"ZMH1"
-METADATA = struct.Struct(">4sQQHI")
+METADATA = struct.Struct(">4sQQHI")  # magic, исходных байтов, полезных битов, символов, CRC32
 CHECKSUM = struct.Struct(">I")
 FIXED_HEADER_BYTES = METADATA.size + CHECKSUM.size  # 30
 CHUNK_BYTES = 65536
@@ -91,6 +91,7 @@ def scan(stream: BinaryIO) -> tuple[list[int], int, int]:
 
 
 def compress(source: str | Path, output: str | Path | None = None) -> dict:
+    """Первый проход: частоты и модель. Второй: запись слов и проверка исходника."""
     source = Path(source)
     output = Path(output) if output is not None else source.with_name(source.name + ".zmh")
     with source.open("rb") as inp:
@@ -164,13 +165,18 @@ def read_header(inp: BinaryIO) -> tuple[int, int, int, dict[int, int]]:
     if lengths:
         minimum = min(lengths.values())
         maximum = max(lengths.values())
-        required = sum(lengths.values())
-        if not required + (size - count) * minimum <= bits <= required + (size - count) * maximum:
+        # Каждый символ модели обязан встретиться хотя бы раз; остальные
+        # size-count байтов дают от minimum до maximum битов каждый.
+        one_each_bits = sum(lengths.values())
+        minimum_bits = one_each_bits + (size - count) * minimum
+        maximum_bits = one_each_bits + (size - count) * maximum
+        if not minimum_bits <= bits <= maximum_bits:
             raise CorruptArchive("Повреждённый архив: число битов несовместимо с моделью и размером")
     return size, bits, checksum, lengths
 
 
 def decompress(source: str | Path, output: str | Path | None = None) -> dict:
+    """Проверить заголовок, восстановить байты и сверить CRC32 до публикации файла."""
     source = Path(source)
     if output is None:
         name = source.name[:-4] if source.name.endswith(".zmh") else source.name + ".out"
@@ -206,6 +212,8 @@ def decompress(source: str | Path, output: str | Path | None = None) -> dict:
                         useful = min(8, remaining_bits)
                         if useful < 8 and byte & ((1 << (8 - useful)) - 1):
                             raise CorruptArchive("Повреждённый архив: ненулевые биты заполнения")
+                        # Слева направо: бит 0 ведёт в левую ветвь, 1 — в правую.
+                        # Дойдя до листа (int), выдаём байт и возвращаемся к корню.
                         for shift in range(7, 7 - useful, -1):
                             node = node[(byte >> shift) & 1]
                             if isinstance(node, int):

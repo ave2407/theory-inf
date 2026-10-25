@@ -67,19 +67,8 @@ def json_text(value: dict) -> str:
         raise InputError(f"Не удалось представить результат в JSON: {exc}") from exc
 
 
-def run(args: argparse.Namespace, argument_parser: argparse.ArgumentParser) -> None:
-    if args.variant:
-        print(json.dumps(VARIANT.as_dict(), ensure_ascii=False, indent=2))
-        return
-    if args.command is None:
-        argument_parser.error("Укажите команду или --variant; список команд: --help")
-    if args.command in {"compress", "decompress"}:
-        operation = compress if args.command == "compress" else decompress
-        data = operation(args.source, args.output)
-        if not args.stats:
-            data = {key: value for key, value in data.items() if key in {"output", "verified"}}
-        sys.stdout.write(json_text(data))
-        return
+def check_output_paths(args: argparse.Namespace) -> None:
+    """Проверить пути до открытия файлов на запись, чтобы не затереть вход."""
     inputs = [Path(args.source)]
     if args.command == "analyze" and args.word_file:
         inputs.append(Path(args.word_file))
@@ -92,46 +81,78 @@ def run(args: argparse.Namespace, argument_parser: argparse.ArgumentParser) -> N
                 output_path.exists() and other.exists() and output_path.samefile(other)
             ):
                 raise InputError("Выходной файл не должен совпадать с входным или другим выходным")
-    source = Source.load(args.source)
-    if args.command in {"analyze", "entropy", "uniform"}:
-        description = None
-        if args.command == "analyze":
-            word = args.word if args.word_file is None else read_json(args.word_file)
-            if not isinstance(word, list) or not word or any(not isinstance(a, str) or not a for a in word):
-                raise InputError("Блок: ожидается непустой JSON-массив непустых строк")
-            data = analyze(source, word, args.n, args.seed)
-        else:
-            distribution = iid_distribution(source)
-            if args.command == "entropy":
-                data = {"stationary": True, "memoryless": True,
-                        "distribution": {a: fraction_text(p) for a, p in distribution.items()},
-                        "entropy_bits": str(entropy(distribution))}
-            else:
-                rate = None if args.rate.upper() == "H" else probability(args.rate, "R")
-                epsilon = probability(args.epsilon, "ε")
-                data, description = analyze_uniform(distribution, rate, epsilon, args.q, args.n_max)
-        result = json_text(data)
-        if description is not None:
-            code_text = json_text(description)
-            with open(args.code_output, "w", encoding="utf-8") as output:
-                output.write(code_text)
-        if args.output:
-            with open(args.output, "w", encoding="utf-8") as stream:
-                stream.write(result)
-        else:
-            sys.stdout.write(result)
+
+
+def write_result(data: dict, output: str | None) -> None:
+    result = json_text(data)
+    if output:
+        Path(output).write_text(result, encoding="utf-8")
     else:
-        # Проверка до открытия output: вход не должен случайно затереться.
-        stream = source.generate(args.seed)
-        if args.n is not None and args.n > 0:
-            stream = islice(stream, args.n)
-        if args.output:
-            with open(args.output, "w", encoding="utf-8") as output:
-                for symbol in stream:
-                    output.write(json.dumps(symbol, ensure_ascii=False) + "\n")
-        else:
+        sys.stdout.write(result)
+
+
+def run_generate(args: argparse.Namespace, source: Source) -> None:
+    stream = source.generate(args.seed)
+    finite = args.n is not None and args.n > 0
+    if finite:
+        stream = islice(stream, args.n)
+    if args.output:
+        with open(args.output, "w", encoding="utf-8") as output:
             for symbol in stream:
-                print(json.dumps(symbol, ensure_ascii=False), flush=args.n is None or args.n <= 0)
+                output.write(json.dumps(symbol, ensure_ascii=False) + "\n")
+    else:
+        for symbol in stream:
+            print(json.dumps(symbol, ensure_ascii=False), flush=not finite)
+
+
+def run_analyze(args: argparse.Namespace, source: Source) -> None:
+    word = args.word if args.word_file is None else read_json(args.word_file)
+    if not isinstance(word, list) or not word or any(not isinstance(a, str) or not a for a in word):
+        raise InputError("Блок: ожидается непустой JSON-массив непустых строк")
+    write_result(analyze(source, word, args.n, args.seed), args.output)
+
+
+def run_entropy(args: argparse.Namespace, source: Source) -> None:
+    distribution = iid_distribution(source)
+    data = {"stationary": True, "memoryless": True,
+            "distribution": {a: fraction_text(p) for a, p in distribution.items()},
+            "entropy_bits": str(entropy(distribution))}
+    write_result(data, args.output)
+
+
+def run_uniform(args: argparse.Namespace, source: Source) -> None:
+    distribution = iid_distribution(source)
+    rate = None if args.rate.upper() == "H" else probability(args.rate, "R")
+    epsilon = probability(args.epsilon, "ε")
+    data, description = analyze_uniform(distribution, rate, epsilon, args.q, args.n_max)
+    # Сериализуем оба результата до записи, чтобы ошибка JSON не оставила полукод.
+    result = json_text(data)
+    code_text = json_text(description)
+    Path(args.code_output).write_text(code_text, encoding="utf-8")
+    if args.output:
+        Path(args.output).write_text(result, encoding="utf-8")
+    else:
+        sys.stdout.write(result)
+
+
+def run(args: argparse.Namespace, argument_parser: argparse.ArgumentParser) -> None:
+    if args.variant:
+        write_result(VARIANT.as_dict(), None)
+        return
+    if args.command is None:
+        argument_parser.error("Укажите команду или --variant; список команд: --help")
+    if args.command in {"compress", "decompress"}:
+        operation = compress if args.command == "compress" else decompress
+        data = operation(args.source, args.output)
+        if not args.stats:
+            data = {key: value for key, value in data.items() if key in {"output", "verified"}}
+        write_result(data, None)
+        return
+    check_output_paths(args)
+    source = Source.load(args.source)
+    handlers = {"generate": run_generate, "analyze": run_analyze,
+                "entropy": run_entropy, "uniform": run_uniform}
+    handlers[args.command](args, source)
 
 
 def main(argv: list[str] | None = None) -> int:

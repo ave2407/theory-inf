@@ -110,6 +110,7 @@ class Source:
         return cls.parse(read_json(path))
 
     def generate(self, seed: int) -> Iterator[str]:
+        """На каждом такте: переключатель → модель → символ → новое состояние."""
         rng = random.Random(seed)
         state = self.initial.draw(rng)
         phase = 0
@@ -124,7 +125,12 @@ class Source:
     def advance(
         self, masses: dict[str, Fraction], phase: int, symbol: str | None = None,
     ) -> dict[str, Fraction]:
-        """Один точный шаг; symbol=None означает суммирование по всем символам."""
+        """Перенести массы состояний на один такт.
+
+        Вклад перехода: масса состояния × P(символ | состояние, фаза)
+        × P(следующее состояние | состояние, символ).
+        symbol=None суммирует по всем символам, например при пропуске тактов.
+        """
         result: dict[str, Fraction] = {}
         for state, mass in masses.items():
             emissions = self.emissions[self.schedules[state][phase % self.period]]
@@ -139,6 +145,7 @@ class Source:
         return result
 
     def block_probability(self, word: Sequence[str], offset: int = 0) -> Fraction:
+        """Пропустить offset тактов, затем оставить только пути с данным словом."""
         if offset < 0:
             raise InputError("Смещение должно быть неотрицательным")
         masses = self.initial.probabilities.copy()
