@@ -1,3 +1,4 @@
+# BEGIN GENERATED CODE: OpenAI Codex; назначение и происхождение — SOURCES.md.
 """Сравнение метода типов с полным перебором и проверки законов источников."""
 
 from copy import deepcopy
@@ -23,6 +24,17 @@ ROOT = Path(__file__).resolve().parents[1]
 
 
 class UniformTests(unittest.TestCase):
+    def test_entropy_rate_for_ternary_powers_and_related_bases(self):
+        p = dict(zip("ABCDE", map(F, ["1/3", "1/3", "1/9", "1/9", "1/9"])))
+        for exponent in (1, 2, 3):
+            for n in range(1, 51):
+                self.assertEqual(code_length(n, None, p, 3 ** exponent),
+                                 4 * n // (3 * exponent))
+
+    def test_small_positive_rate_has_zero_code_length(self):
+        p = {"A": F(3, 4), "B": F(1, 4)}
+        self.assertEqual(code_length(2, F(1, 10 ** 400), p, 5), 0)
+
     def test_entropy_hand_calculation(self):
         self.assertEqual(entropy({"A": F(1, 2), "B": F(1, 4), "C": F(1, 4)}), Decimal("1.5"))
         self.assertEqual(entropy({"A": F(1), "B": F(0)}), 0)
@@ -268,3 +280,5 @@ class UniformCliTests(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
+
+# END GENERATED CODE: OpenAI Codex.

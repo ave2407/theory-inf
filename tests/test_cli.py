@@ -1,3 +1,4 @@
+# BEGIN GENERATED CODE: OpenAI Codex; назначение и происхождение — SOURCES.md.
 """Проверки настоящего CLI, файлов, диагностик и остановки бесконечного потока."""
 
 import json
@@ -122,3 +123,5 @@ class CliTests(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
+
+# END GENERATED CODE: OpenAI Codex.

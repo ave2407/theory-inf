@@ -1,3 +1,4 @@
+# BEGIN GENERATED CODE: OpenAI Codex; назначение и происхождение — SOURCES.md.
 """Собственные бинарные входы архиватора, включая синтетический PNG и Unicode."""
 
 import argparse
@@ -50,3 +51,5 @@ def main():
 
 if __name__ == "__main__":
     main()
+
+# END GENERATED CODE: OpenAI Codex.

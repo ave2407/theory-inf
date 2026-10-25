@@ -1,3 +1,4 @@
+# BEGIN GENERATED CODE: OpenAI Codex; назначение и происхождение — SOURCES.md.
 """Входы задачи 1.2 на варианте s=2 и отдельный контроль производительности."""
 
 from copy import deepcopy
@@ -41,3 +42,5 @@ def main():
 
 if __name__ == "__main__":
     main()
+
+# END GENERATED CODE: OpenAI Codex.

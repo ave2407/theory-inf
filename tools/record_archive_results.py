@@ -1,3 +1,4 @@
+# BEGIN GENERATED CODE: OpenAI Codex; назначение и происхождение — SOURCES.md.
 """CLI-измерения задачи 1.3, read-back и примеры диагностик повреждений."""
 
 import hashlib
@@ -95,3 +96,5 @@ def main():
 
 if __name__ == "__main__":
     main()
+
+# END GENERATED CODE: OpenAI Codex.

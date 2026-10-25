@@ -1,3 +1,4 @@
+# BEGIN GENERATED CODE: OpenAI Codex; назначение и происхождение — SOURCES.md.
 """Точная проверка стационарного источника без памяти, включая скрытые состояния."""
 
 from collections import deque
@@ -97,3 +98,5 @@ def iid_distribution(source: Source) -> dict[str, Fraction]:
             if any(following) and reachable.add(following):
                 queue.append((following, (*prefix, a)))
     return distribution
+
+# END GENERATED CODE: OpenAI Codex.

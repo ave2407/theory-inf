@@ -1,3 +1,4 @@
+# BEGIN GENERATED CODE: OpenAI Codex; назначение и происхождение — SOURCES.md.
 """Точная арифметика вероятностей и выборка без округления в float."""
 
 from bisect import bisect_right
@@ -105,3 +106,5 @@ def references(distribution: Distribution, names: set[str], location: str) -> No
     unknown = distribution.probabilities.keys() - names
     if unknown:
         raise InputError(f"{location}: неизвестные ссылки {', '.join(sorted(unknown))}")
+
+# END GENERATED CODE: OpenAI Codex.

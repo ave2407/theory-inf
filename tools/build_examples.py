@@ -1,3 +1,4 @@
+# BEGIN GENERATED CODE: OpenAI Codex; назначение и происхождение — SOURCES.md.
 """Воспроизводимо подготовить собственные входы задачи 1.1, s=2."""
 
 from copy import deepcopy
@@ -94,3 +95,5 @@ if __name__ == "__main__":
             value["source"] = []
         write(invalid / f"{name}.json", value)
     (invalid / "broken.json").write_text('{"models":', encoding="utf-8")
+
+# END GENERATED CODE: OpenAI Codex.

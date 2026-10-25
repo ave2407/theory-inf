@@ -1,3 +1,4 @@
+# BEGIN GENERATED CODE: OpenAI Codex; назначение и происхождение — SOURCES.md.
 """Параметры из раздела «Параметры варианта» условия ДЗ №1."""
 
 from dataclasses import dataclass
@@ -46,3 +47,5 @@ class Variant:
 
 
 VARIANT = Variant.from_student(STUDENT_NUMBER)
+
+# END GENERATED CODE: OpenAI Codex.

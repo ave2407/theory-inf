@@ -1,50 +1,59 @@
-"""Длины и канонические коды Хаффмана для байтового алфавита."""
+# BEGIN GENERATED CODE: OpenAI Codex; назначение и происхождение — SOURCES.md.
+"""Хаффман: две очереди, массив родителей и канонические коды по длинам."""
 
-import heapq
 from typing import BinaryIO
 
 from theory_inf.distributions import InputError
 
 
 def code_lengths(frequencies: list[int]) -> dict[int, int]:
-    """По 256 частотам байтов вернуть длины слов только для встречающихся символов.
+    """Построить оптимальные длины за O(m log m) времени и O(m) памяти.
 
-    Два самых лёгких поддерева сливаются, глубина листа становится длиной слова.
-    Для пустого входа результат пуст; единственному символу назначается длина 0.
+    Листья отсортированы один раз. Веса создаваемых узлов не убывают,
+    поэтому достаточно голов двух очередей: листьев и внутренних узлов.
+    Родитель всегда создан позже ребёнка; глубины вычисляются обратным проходом.
+    При равном весе лист предшествует внутреннему узлу, листья — по байту,
+    внутренние узлы — по порядку создания. Один символ имеет длину 0.
     """
     if len(frequencies) != 256 or any(type(n) is not int or n < 0 for n in frequencies):
         raise InputError("Нужны 256 неотрицательных целых частот байтов")
-    queue = [(freq, symbol, symbol) for symbol, freq in enumerate(frequencies) if freq]
-    heapq.heapify(queue)
-    if not queue:
-        return {}
-    if len(queue) == 1:
-        return {queue[0][1]: 0}
-    # Минимальный символ поддерева разрешает равенство весов детерминированно.
-    while len(queue) > 1:
-        left_weight, left_min_symbol, left_tree = heapq.heappop(queue)
-        right_weight, right_min_symbol, right_tree = heapq.heappop(queue)
-        combined_weight = left_weight + right_weight
-        min_symbol = min(left_min_symbol, right_min_symbol)
-        heapq.heappush(queue, (combined_weight, min_symbol, (left_tree, right_tree)))
-    lengths = {}
-    stack = [(queue[0][2], 0)]
-    while stack:
-        node, depth = stack.pop()
-        if isinstance(node, int):
-            lengths[node] = depth
+    leaves = sorted((weight, symbol) for symbol, weight in enumerate(frequencies) if weight)
+    count = len(leaves)
+    if count < 2:
+        return {symbol: 0 for _, symbol in leaves}
+    weights = [weight for weight, _ in leaves]
+    parents = [-1] * count
+    leaf_head, branch_head = 0, count
+
+    def take_minimum() -> int:
+        nonlocal leaf_head, branch_head
+        if leaf_head < count and (branch_head == len(weights) or
+                                  weights[leaf_head] <= weights[branch_head]):
+            result = leaf_head
+            leaf_head += 1
         else:
-            stack.append((node[1], depth + 1))
-            stack.append((node[0], depth + 1))
-    return lengths
+            result = branch_head
+            branch_head += 1
+        return result
+
+    for _ in range(count - 1):
+        first, second = take_minimum(), take_minimum()
+        parent = len(weights)
+        parents[first] = parents[second] = parent
+        weights.append(weights[first] + weights[second])
+        parents.append(-1)
+    depths = [0] * len(weights)
+    for node in range(len(weights) - 2, -1, -1):
+        depths[node] = depths[parents[node]] + 1
+    return {symbol: depths[i] for i, (_, symbol) in enumerate(leaves)}
 
 
 def canonical_codes(lengths: dict[int, int]) -> dict[int, tuple[int, int]]:
-    """Байт → (слово как целое число, длина в битах).
+    """Распределить интервалы кодов по длинам; вернуть байт → (число, длина).
 
-    Для длин A:1, B:2, C:2 получатся A:0, B:10, C:11.
-    При переходе к большей длине приписываем нули справа;
-    следующее слово той же длины получаем прибавлением единицы.
+    Сначала проверяется число свободных мест на каждом уровне (равенство
+    Крафта). Затем символы каждой длины занимают последовательные номера.
+    Порядок байтов внутри уровня определён форматом ZMH1.
     """
     if any(type(a) is not int or not 0 <= a <= 255 or
            type(n) is not int or not 0 <= n <= 255 for a, n in lengths.items()):
@@ -58,72 +67,63 @@ def canonical_codes(lengths: dict[int, int]) -> dict[int, tuple[int, int]]:
         return {symbol: (0, 0)}
     if 0 in lengths.values():
         raise InputError("Нулевая длина разрешена только для единственного символа")
-    # Канонические слова определены длинами и порядком символов.
+    levels = [[] for _ in range(max(lengths.values()) + 1)]
+    for symbol in sorted(lengths):
+        levels[lengths[symbol]].append(symbol)
+    free = 1
+    first_code = 0
     result = {}
-    code = previous_length = 0
-    for length, symbol in sorted((length, symbol) for symbol, length in lengths.items()):
-        code <<= length - previous_length
-        if code >= 1 << length:
+    for width in range(1, len(levels)):
+        free = 2 * free - len(levels[width])
+        if free < 0:
             raise InputError("Переполненное кодовое дерево")
-        result[symbol] = (code, length)
-        code += 1
-        previous_length = length
-    if code != 1 << previous_length:
+        first_code *= 2
+        for offset, symbol in enumerate(levels[width]):
+            result[symbol] = (first_code + offset, width)
+        first_code += len(levels[width])
+    if free:
         raise InputError("Неполное кодовое дерево")
     return result
 
 
-def decoding_tree(codes: dict[int, tuple[int, int]]) -> dict:
-    """Построить дерево из проверенных кодов: ключи 0/1 — ветви, целые листья — байты.
-
-    Пустое кодовое слово не поддерживается: один символ восстанавливается
-    отдельно по размеру исходного файла из заголовка.
-    """
-    tree = {}
-    for symbol, (code, length) in codes.items():
-        if not length:
-            raise InputError("Пустое слово декодируется отдельно по исходной длине")
-        node = tree
-        for shift in range(length - 1, 0, -1):
-            node = node.setdefault((code >> shift) & 1, {})
-        node[code & 1] = symbol
-    return tree
-
-
 class BitWriter:
-    """Записывать кодовые слова произвольной длины в бинарный поток, MSB-first.
+    """Потоковый MSB-first вывод с заполнением одного байта по частям.
 
-    buffer хранит готовые байты, pending/pending_bits — неполный хвост,
-    total_bits считает полезные биты без заполнения. После всех write
-    вызывается finish; переданный поток остаётся открытым.
+    Незаконченный байт хранится выровненным влево. Кодовое слово разбивается
+    на куски по свободному месту в этом байте; большие битовые хвосты не хранятся.
     """
 
     def __init__(self, stream: BinaryIO, buffer_size: int = 65536):
+        if buffer_size < 1:
+            raise InputError("Размер буфера должен быть положительным")
         self.stream = stream
         self.buffer_size = buffer_size
         self.buffer = bytearray()
-        self.pending = 0
-        self.pending_bits = 0
-        self.total_bits = 0
+        self.byte = self.used = self.total_bits = 0
 
     def write(self, code: int, length: int) -> None:
-        """Приписать length битов проверенного слова code; готовые байты буферизовать."""
-        # pending хранит ещё не выведенный хвост, pending_bits — его длину.
-        self.pending = (self.pending << length) | code
-        self.pending_bits += length
+        """Записать проверенное слово, выделяя не более восьми битов за шаг."""
         self.total_bits += length
-        while self.pending_bits >= 8:
-            self.pending_bits -= 8
-            self.buffer.append(self.pending >> self.pending_bits)
-            self.pending &= (1 << self.pending_bits) - 1
-        if len(self.buffer) >= self.buffer_size:
-            self.stream.write(self.buffer)
-            self.buffer.clear()
+        remaining = length
+        while remaining:
+            take = min(8 - self.used, remaining)
+            remaining -= take
+            part = (code >> remaining) & ((1 << take) - 1)
+            self.byte |= part << (8 - self.used - take)
+            self.used += take
+            if self.used == 8:
+                self.buffer.append(self.byte)
+                self.byte = self.used = 0
+                if len(self.buffer) >= self.buffer_size:
+                    self.stream.write(self.buffer)
+                    self.buffer.clear()
 
     def finish(self) -> None:
-        """Дополнить неполный байт нулями справа и записать оставшийся буфер."""
-        if self.pending_bits:
-            self.buffer.append(self.pending << (8 - self.pending_bits))
+        """Дополнить последний байт нулями справа и сбросить буфер."""
+        if self.used:
+            self.buffer.append(self.byte)
         self.stream.write(self.buffer)
         self.buffer.clear()
-        self.pending = self.pending_bits = 0
+        self.byte = self.used = 0
+
+# END GENERATED CODE: OpenAI Codex.

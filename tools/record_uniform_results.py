@@ -1,3 +1,4 @@
+# BEGIN GENERATED CODE: OpenAI Codex; назначение и происхождение — SOURCES.md.
 """Реальные CLI-выводы задачи 1.2 и отдельный замер полного запуска при k=5."""
 
 import json
@@ -99,3 +100,5 @@ def main():
 
 if __name__ == "__main__":
     main()
+
+# END GENERATED CODE: OpenAI Codex.

@@ -1,3 +1,4 @@
+# BEGIN GENERATED CODE: OpenAI Codex; назначение и происхождение — SOURCES.md.
 """Периодический источник и его расширение конечным состоянием."""
 
 from dataclasses import dataclass
@@ -183,3 +184,5 @@ class Source:
         """Вернуть P(блок с первого такта) и среднее P по смещениям 0,…,L−1."""
         probabilities = [self.block_probability(word, j) for j in range(self.period)]
         return probabilities[0], sum(probabilities, Fraction(0)) / self.period
+
+# END GENERATED CODE: OpenAI Codex.

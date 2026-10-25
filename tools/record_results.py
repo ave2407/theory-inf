@@ -1,3 +1,4 @@
+# BEGIN GENERATED CODE: OpenAI Codex; назначение и происхождение — SOURCES.md.
 """Запустить собственные входы через CLI и сохранить проверяемый RESULTS.md."""
 
 import json
@@ -74,3 +75,5 @@ def main() -> None:
 
 if __name__ == "__main__":
     main()
+
+# END GENERATED CODE: OpenAI Codex.

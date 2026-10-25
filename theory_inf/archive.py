@@ -1,3 +1,4 @@
+# BEGIN GENERATED CODE: OpenAI Codex; назначение и происхождение — SOURCES.md.
 """Двухпроходный архиватор ZMH1 с проверкой целостности и потоковым I/O."""
 
 from collections import Counter
@@ -12,7 +13,7 @@ import zlib
 
 from theory_inf.distributions import InputError
 from theory_inf.experiment import fraction_record
-from theory_inf.huffman import BitWriter, canonical_codes, code_lengths, decoding_tree
+from theory_inf.huffman import BitWriter, canonical_codes, code_lengths
 from theory_inf.information import entropy
 
 MAGIC = b"ZMH1"
@@ -43,9 +44,13 @@ def atomic_output(path: Path, source: Path):
     При исключении временный файл удаляется; hard link в конце защищает
     также от появления чужого файла по выходному пути за время операции.
     """
-    if path.resolve() == source.resolve() or (
-        path.exists() and source.exists() and path.samefile(source)
-    ):
+    try:
+        same = path.resolve() == source.resolve() or (
+            path.exists() and source.exists() and path.samefile(source)
+        )
+    except RuntimeError as exc:
+        raise InputError(f"Не удалось разрешить путь (цикл символьных ссылок): {exc}") from exc
+    if same:
         raise InputError("Выходной файл не должен совпадать с входным")
     if os.path.lexists(path):
         raise InputError(f"Выходной файл уже существует: {path}")
@@ -219,8 +224,15 @@ def decode_payload(
             produced += len(chunk)
         return frequencies, checksum
 
-    tree = decoding_tree(canonical_codes(lengths))
-    node = tree
+    # Для длины w кодам соответствует непрерывный интервал first[w]+[0,count).
+    maximum = max(lengths.values())
+    first = [0] * (maximum + 1)
+    symbols = [[] for _ in range(maximum + 1)]
+    for symbol, (code, width) in canonical_codes(lengths).items():
+        if not symbols[width]:
+            first[width] = code
+        symbols[width].append(symbol)
+    prefix = width = 0
     buffer = bytearray()
     remaining_bits = bits
     remaining_bytes = (bits + 7) // 8
@@ -233,23 +245,26 @@ def decode_payload(
             useful = min(8, remaining_bits)
             if useful < 8 and byte & ((1 << (8 - useful)) - 1):
                 raise CorruptArchive("Повреждённый архив: ненулевые биты заполнения")
-            # Слева направо: бит 0 ведёт в левую ветвь, 1 — в правую.
-            # Дойдя до листа (int), выдаём байт и возвращаемся к корню.
             for shift in range(7, 7 - useful, -1):
-                node = node[(byte >> shift) & 1]
-                if isinstance(node, int):
+                prefix = 2 * prefix + ((byte >> shift) & 1)
+                width += 1
+                index = prefix - first[width]
+                if 0 <= index < len(symbols[width]):
                     if produced >= size:
                         raise CorruptArchive("Повреждённый архив: восстановлено больше заявленного размера")
-                    buffer.append(node)
-                    frequencies[node] += 1
+                    symbol = symbols[width][index]
+                    buffer.append(symbol)
+                    frequencies[symbol] += 1
                     produced += 1
-                    node = tree
+                    prefix = width = 0
+                elif width == maximum:
+                    raise CorruptArchive("Повреждённый архив: неизвестное кодовое слово")
             remaining_bits -= useful
             if len(buffer) >= CHUNK_BYTES:
                 out.write(buffer)
                 checksum = zlib.crc32(buffer, checksum)
                 buffer.clear()
-    if node is not tree or produced != size:
+    if width or produced != size:
         raise CorruptArchive("Повреждённый архив: неполное слово или неверный исходный размер")
     out.write(buffer)
     checksum = zlib.crc32(buffer, checksum)
@@ -286,3 +301,5 @@ def decompress(source: str | Path, output: str | Path | None = None) -> dict:
             frequencies, checksum = decode_payload(inp, out, size, bits, lengths)
             verify_result(frequencies, checksum, size, expected_crc, lengths)
     return {"output": str(output), "verified": True, **statistics(frequencies, lengths, bits, checksum)}
+
+# END GENERATED CODE: OpenAI Codex.

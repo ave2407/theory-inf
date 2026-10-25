@@ -1,3 +1,4 @@
+# BEGIN GENERATED CODE: OpenAI Codex; назначение и происхождение — SOURCES.md.
 """Равномерное кодирование iid-источника точным методом типов."""
 
 from fractions import Fraction
@@ -148,3 +149,5 @@ def analyze_uniform(distribution: dict[str, Fraction], rate: Fraction | None,
         "blocks": [{key: row[key] for key in ("n", "length", "selected_blocks")} for row in table],
     }
     return result, description
+
+# END GENERATED CODE: OpenAI Codex.

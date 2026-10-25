@@ -1,3 +1,4 @@
+# BEGIN GENERATED CODE: OpenAI Codex; назначение и происхождение — SOURCES.md.
 """Архив ZMH1: контрольные коды, побайтовое восстановление и повреждения."""
 
 from fractions import Fraction
@@ -30,6 +31,12 @@ def container(size, bits, crc, pairs, payload=b""):
 
 
 class HuffmanTests(unittest.TestCase):
+    def test_leaf_queue_precedes_equal_weight_internal_node(self):
+        # После слияния 1+1 оставшиеся листья 2,2 идут перед новым узлом 2.
+        # Все четыре длины равны 2; правило minimum-symbol дало бы 3,3,2,1.
+        self.assertEqual(code_lengths([1, 1, 2, 2] + [0] * 252),
+                         {0: 2, 1: 2, 2: 2, 3: 2})
+
     def test_manual_tree_and_canonical_codes(self):
         frequencies = [0] * 256
         frequencies[65:68] = [4, 2, 1]
@@ -292,3 +299,5 @@ class ArchiveCliTests(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
+
+# END GENERATED CODE: OpenAI Codex.

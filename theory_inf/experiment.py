@@ -1,3 +1,4 @@
+# BEGIN GENERATED CODE: OpenAI Codex; назначение и происхождение — SOURCES.md.
 """Частоты перекрывающихся блоков в одной реализации, без хранения всего потока."""
 
 from fractions import Fraction
@@ -92,3 +93,5 @@ def analyze(source: Source, word: Sequence[str], n: int, seed: int) -> dict:
             "для неэргодического расширения общий ансамблевый предел не гарантирован."
         ),
     }
+
+# END GENERATED CODE: OpenAI Codex.

@@ -1,3 +1,4 @@
+# BEGIN GENERATED CODE: OpenAI Codex; назначение и происхождение — SOURCES.md.
 """Энтропия, сравнение скоростей и надёжное округление длины кодового слова."""
 
 from decimal import Decimal, ROUND_FLOOR, localcontext
@@ -102,8 +103,12 @@ def rate_relation(rate: Fraction | None, distribution: dict[str, Fraction]) -> i
     for precision in (80, 160, 320):
         with localcontext() as context:
             context.prec = precision
-            difference = decimal_fraction(rate) - entropy(distribution, precision)
-            if abs(difference) > Decimal(10) ** (-precision + 10):
+            r = decimal_fraction(rate)
+            h = entropy(distribution, precision)
+            difference = r - h
+            # Относительная граница сохраняет сравнение и при H << 10**-320.
+            tolerance = max(abs(r), abs(h)) * Decimal(10) ** (-precision + 10)
+            if abs(difference) > tolerance:
                 return 1 if difference > 0 else -1
     raise InputError("Не удаётся различить R и H с точностью 320 знаков; для точного R=H используйте --rate H")
 
@@ -128,6 +133,22 @@ def code_length(n: int, rate: Fraction | None, distribution: dict[str, Fraction]
         if ratio is not None:
             value = n * ratio
             return value.numerator // value.denominator
+    if rate is None:
+        # Если p_i=q**(-r_i) с рациональными r_i, то H/log2(q)=Σ p_i*r_i.
+        # log_ratio(q, denominator) факторизует q, а не длинный знаменатель.
+        coefficient = Fraction(0)
+        for p in positive:
+            if p == 1:
+                continue
+            if p.numerator != 1:
+                break
+            inverse = log_ratio(q, p.denominator)
+            if inverse is None:
+                break
+            coefficient += p / inverse
+        else:
+            value = n * coefficient
+            return value.numerator // value.denominator
     for precision in (80, 160, 320):
         with localcontext() as context:
             context.prec = precision
@@ -135,9 +156,11 @@ def code_length(n: int, rate: Fraction | None, distribution: dict[str, Fraction]
             value = n * r * Decimal(2).ln() / Decimal(q).ln()
             lower = int(value.to_integral_value(rounding=ROUND_FLOOR))
             distance = min(value - lower, lower + 1 - value)
-            if distance > Decimal(10) ** (-precision + max(10, value.adjusted() + 10)):
+            if distance > abs(value) * Decimal(10) ** (-precision + 10):
                 return lower
     # Нулевая скорость даёт точное нулевое значение при любом q.
     if (rate == 0) or (rate is None and len(positive) == 1):
         return 0
     raise InputError("Не удалось надёжно округлить длину кода с точностью 320 знаков")
+
+# END GENERATED CODE: OpenAI Codex.

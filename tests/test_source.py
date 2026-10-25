@@ -1,3 +1,4 @@
+# BEGIN GENERATED CODE: OpenAI Codex; назначение и происхождение — SOURCES.md.
 """Контрольные вероятности не вычисляются повторением алгоритма реализации."""
 
 from copy import deepcopy
@@ -173,3 +174,5 @@ class SourceTests(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
+
+# END GENERATED CODE: OpenAI Codex.

@@ -1,3 +1,4 @@
+# BEGIN GENERATED CODE: OpenAI Codex; назначение и происхождение — SOURCES.md.
 """Неинтерактивные режимы ДЗ №1."""
 
 import argparse
@@ -82,9 +83,13 @@ def check_output_paths(args: argparse.Namespace) -> None:
         outputs.append(Path(args.code_output))
     for i, output_path in enumerate(outputs):
         for other in [*inputs, *outputs[:i]]:
-            if output_path.resolve() == other.resolve() or (
-                output_path.exists() and other.exists() and output_path.samefile(other)
-            ):
+            try:
+                same = output_path.resolve() == other.resolve() or (
+                    output_path.exists() and other.exists() and output_path.samefile(other)
+                )
+            except RuntimeError as exc:
+                raise InputError(f"Не удалось разрешить путь (цикл символьных ссылок): {exc}") from exc
+            if same:
                 raise InputError("Выходной файл не должен совпадать с входным или другим выходным")
 
 
@@ -188,3 +193,5 @@ def main(argv: list[str] | None = None) -> int:
         print(f"Ошибка: {exc}", file=sys.stderr)
         return 2
     return 0
+
+# END GENERATED CODE: OpenAI Codex.
