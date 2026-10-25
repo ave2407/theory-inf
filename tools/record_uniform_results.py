@@ -19,6 +19,7 @@ CASES = [
 
 
 def execute(arguments, expected=0):
+    """Запустить CLI с тайм-аутом и отвергнуть неожиданный код завершения."""
     result = subprocess.run([sys.executable, "main.py", *map(str, arguments)],
                             cwd=ROOT, text=True, capture_output=True, timeout=30)
     if result.returncode != expected:
@@ -27,6 +28,11 @@ def execute(arguments, expected=0):
 
 
 def main():
+    """Сохранить таблицы и коды задачи 1.2, диагностики и замер при k=5,n_max=50.
+
+    Обновляется только раздел задачи 1.2 в RESULTS.md; JSON-файлы результатов
+    перезаписываются, время измеряется отдельно от детерминированного вывода.
+    """
     (ROOT / DIRECTORY).mkdir(parents=True, exist_ok=True)
     lines = [MARKER, "", "Вариант s=2, q=5, ε=1/10000, n_max=50.", "",
              f"Python {platform.python_version()}. `python3 tools/record_uniform_results.py`.", "",

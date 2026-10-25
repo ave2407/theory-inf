@@ -13,7 +13,9 @@ from theory_inf.distributions import (
 
 
 def read_json(path: str | Path) -> object:
+    """Прочитать JSON, отвергая повторные ключи и поясняя ошибки синтаксиса."""
     def unique_keys(pairs: list[tuple[str, object]]) -> dict:
+        """Собрать объект до потери повторных ключей стандартным JSON-декодером."""
         result = {}
         for key, value in pairs:
             if key in result:
@@ -33,6 +35,7 @@ def read_json(path: str | Path) -> object:
 
 
 def schedule(value: object, switches: set[str], location: str) -> tuple[str, ...]:
+    """Проверить непустой период из объявленных переключателей и вернуть кортеж."""
     if not isinstance(value, list) or not value:
         raise InputError(f"{location}: ожидается непустой список переключателей")
     if any(not isinstance(name, str) or name not in switches for name in value):
@@ -42,6 +45,15 @@ def schedule(value: object, switches: set[str], location: str) -> tuple[str, ...
 
 @dataclass(frozen=True)
 class Source:
+    """Описание источника, общее для генерации и точного расчёта вероятностей.
+
+    models: модель → распределение символов; switches: переключатель →
+    распределение моделей; schedules: состояние → период переключателей.
+    initial задаёт начальное состояние, transitions[состояние][символ] —
+    распределение следующего состояния. emissions содержит уже смешанные
+    вероятности символов для каждого переключателя. alphabet — общий алфавит,
+    period — длина периода. Старый формат представлен одним состоянием default.
+    """
     models: dict[str, Distribution]
     switches: dict[str, Distribution]
     schedules: dict[str, tuple[str, ...]]
@@ -53,6 +65,11 @@ class Source:
 
     @classmethod
     def parse(cls, value: object) -> "Source":
+        """Проверить описание и ссылки, построить состояния и эффективные распределения.
+
+        Без state_machine добавляется одно постоянное состояние. Для каждого
+        переключателя заранее считается P(a)=Σ_m P(m)·P(a|m).
+        """
         data = object_map(value, "источник")
         fields(data, {"models", "switches", "source"}, {"state_machine"}, "источник")
         models = {
@@ -107,10 +124,15 @@ class Source:
 
     @classmethod
     def load(cls, path: str | Path) -> "Source":
+        """Загрузить JSON-файл и разобрать его по правилам Source.parse."""
         return cls.parse(read_json(path))
 
     def generate(self, seed: int) -> Iterator[str]:
-        """На каждом такте: переключатель → модель → символ → новое состояние."""
+        """Бесконечно выдавать символы при фиксированном seed.
+
+        На каждом такте: переключатель → модель → символ → новое состояние.
+        Число выданных символов ограничивает вызывающий код, например CLI.
+        """
         rng = random.Random(seed)
         state = self.initial.draw(rng)
         phase = 0
@@ -130,6 +152,8 @@ class Source:
         Вклад перехода: масса состояния × P(символ | состояние, фаза)
         × P(следующее состояние | состояние, символ).
         symbol=None суммирует по всем символам, например при пропуске тактов.
+        Массы не нормируются: их сумма после фиксации символов — вероятность
+        уже выданного префикса, а не обязательно единица.
         """
         result: dict[str, Fraction] = {}
         for state, mass in masses.items():
@@ -156,5 +180,6 @@ class Source:
         return sum(masses.values(), Fraction(0))
 
     def exact_probabilities(self, word: Sequence[str]) -> tuple[Fraction, Fraction]:
+        """Вернуть P(блок с первого такта) и среднее P по смещениям 0,…,L−1."""
         probabilities = [self.block_probability(word, j) for j in range(self.period)]
         return probabilities[0], sum(probabilities, Fraction(0)) / self.period

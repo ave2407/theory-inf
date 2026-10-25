@@ -17,6 +17,7 @@ NAMES = ("russian.txt", "english.txt", "image.png", "repeated.bin", "empty.bin",
 
 
 def execute(arguments, expected=0):
+    """Запустить CLI архиватора и проверить код завершения, включая ожидаемые ошибки."""
     result = subprocess.run([sys.executable, "main.py", *map(str, arguments)], cwd=ROOT,
                             capture_output=True, text=True, timeout=30)
     if result.returncode != expected:
@@ -25,6 +26,11 @@ def execute(arguments, expected=0):
 
 
 def main():
+    """Пересоздать архивы корпуса, проверить восстановление и записать статистику.
+
+    Для каждого входа сравниваются байты, SHA-256 и результат проверки CRC32.
+    Затем сохраняются примеры повреждений и обновляется раздел 1.3 RESULTS.md.
+    """
     (ROOT / OUTPUTS).mkdir(parents=True, exist_ok=True)
     lines = [MARKER, "", f"Python {platform.python_version()}. Воспроизведение: `python3 tools/record_archive_results.py`.", "",
              "PNG синтетический, создан tools/build_archive_examples.py с seed=2. Контрольные тексты собственные, UTF-8.",

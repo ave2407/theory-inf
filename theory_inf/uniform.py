@@ -1,218 +1,11 @@
-"""Равномерное кодирование iid-источника: проверка закона и точный метод типов."""
+"""Равномерное кодирование iid-источника точным методом типов."""
 
-from collections import deque
-from decimal import Decimal, ROUND_FLOOR, localcontext
 from fractions import Fraction
 from math import comb, lcm
 
 from theory_inf.distributions import InputError, fraction_text
 from theory_inf.experiment import fraction_record
-from theory_inf.source import Source
-
-
-class LinearSpan:
-    """Базис методом Гаусса. add возвращает True только для нового направления.
-
-    Линейные равенства достаточно проверять на базисе: для любой линейной
-    комбинации они выполнятся автоматически. Это завершает проверку потока
-    после конечного числа векторов вместо перебора всех префиксов.
-    """
-
-    def __init__(self):
-        self.rows: dict[int, list[Fraction]] = {}
-
-    def add(self, vector: list[Fraction]) -> bool:
-        reduced = vector.copy()
-        for pivot, row in sorted(self.rows.items()):
-            if reduced[pivot]:
-                weight = reduced[pivot]
-                reduced = [a - weight * b for a, b in zip(reduced, row)]
-        for pivot, weight in enumerate(reduced):
-            if weight:
-                self.rows[pivot] = [a / weight for a in reduced]
-                return True
-        return False
-
-
-def iid_distribution(source: Source) -> dict[str, Fraction]:
-    """Проверить iid-закон на всём потоке, а не на фиксированном числе тактов.
-
-    Координата вектора — масса пары (состояние, фаза). step(v, a) переносит
-    её после выдачи a; сумма координат равна вероятности префикса с a.
-    Для iid должно быть sum(step(v, a)) == sum(v) * P(a) для любого
-    достижимого v. Операции линейны, поэтому достаточно достижимого базиса.
-    """
-    states = sorted(source.schedules)
-    indices = {(state, phase): i for i, (state, phase) in
-               enumerate((s, p) for s in states for p in range(source.period))}
-    dimension = len(indices)
-    initial = [Fraction(0)] * dimension
-    for state, weight in source.initial.probabilities.items():
-        initial[indices[state, 0]] = weight
-    edges = {a: [[] for _ in range(dimension)] for a in source.alphabet}
-    for (state, phase), i in indices.items():
-        emissions = source.emissions[source.schedules[state][phase]]
-        for a in source.alphabet:
-            for next_state, weight in source.transitions[state][a].probabilities.items():
-                mass = emissions[a] * weight
-                if mass:
-                    edges[a][i].append((indices[next_state, (phase + 1) % source.period], mass))
-
-    def step(vector: list[Fraction], symbol: str | None = None) -> list[Fraction]:
-        result = [Fraction(0)] * dimension
-        for a in source.alphabet if symbol is None else (symbol,):
-            for i, mass in enumerate(vector):
-                if mass:
-                    for j, weight in edges[a][i]:
-                        result[j] += mass * weight
-        return result
-
-    distribution = {a: sum(step(initial, a)) for a in source.alphabet}
-    # Если все односимвольные законы одинаковы, но iid не выполнено,
-    # нарушена независимость. Иначе можно сразу указать нестационарность.
-    marginals = LinearSpan()
-    vector = initial
-    time = 1
-    while marginals.add(vector):
-        if any(sum(step(vector, a)) != distribution[a] for a in source.alphabet):
-            raise InputError(f"Источник нестационарен: распределение символа меняется на такте {time}")
-        vector = step(vector)
-        time += 1
-
-    reachable = LinearSpan()
-    reachable.add(initial)
-    queue = deque([(initial, ())])
-    while queue:
-        vector, prefix = queue.popleft()
-        mass = sum(vector)
-        for a in source.alphabet:
-            following = step(vector, a)
-            if sum(following) != mass * distribution[a]:
-                raise InputError(
-                    f"Источник имеет память: вероятность {a!r} зависит от префикса {list(prefix)!r}"
-                )
-            if any(following) and reachable.add(following):
-                queue.append((following, (*prefix, a)))
-    return distribution
-
-
-def decimal_fraction(value: Fraction) -> Decimal:
-    return Decimal(value.numerator) / Decimal(value.denominator)
-
-
-def rational_log(value: Fraction) -> int | None:
-    """log2(value), если value — целая степень двойки."""
-    n, d = value.numerator, value.denominator
-    if n > 0 and n & (n - 1) == 0 and d & (d - 1) == 0:
-        return n.bit_length() - d.bit_length()
-    return None
-
-
-def exact_entropy(distribution: dict[str, Fraction]) -> Fraction | None:
-    total = Fraction(0)
-    for p in distribution.values():
-        if p:
-            exponent = rational_log(p)
-            if exponent is None:
-                return None
-            total -= p * exponent
-    return total
-
-
-def entropy(distribution: dict[str, Fraction], precision: int = 80) -> Decimal:
-    with localcontext() as context:
-        # Сохраняем отличие (D−1)/D от единицы даже при D > 10**precision.
-        guard = max(Decimal(p.denominator).adjusted() + 1 for p in distribution.values())
-        context.prec = precision + guard
-        exact = exact_entropy(distribution)
-        if exact is not None:
-            result = decimal_fraction(exact)
-        else:
-            result = -sum((decimal_fraction(p) * decimal_fraction(p).ln() / Decimal(2).ln()
-                           for p in distribution.values() if p), Decimal(0))
-        context.prec = precision
-        return +result
-
-
-def log_ratio(numerator: int, denominator: int) -> Fraction | None:
-    """Рациональное log_denominator(numerator), иначе None; без float."""
-    if numerator == 1:
-        return Fraction(0)
-    rest, prime = numerator, 2
-    ratios = []
-    other = denominator
-    while prime * prime <= rest:
-        if rest % prime:
-            prime += 1
-            continue
-        a = b = 0
-        while rest % prime == 0:
-            rest //= prime
-            a += 1
-        while other % prime == 0:
-            other //= prime
-            b += 1
-        if not b:
-            return None
-        ratios.append(Fraction(a, b))
-        prime += 1
-    if rest > 1:
-        b = 0
-        while other % rest == 0:
-            other //= rest
-            b += 1
-        if not b:
-            return None
-        ratios.append(Fraction(1, b))
-    if other != 1 or len(set(ratios)) != 1:
-        return None
-    return ratios[0]
-
-
-def rate_relation(rate: Fraction | None, distribution: dict[str, Fraction]) -> int:
-    """None обозначает точно R=H; численное равенство не вводится допуском."""
-    if rate is None:
-        return 0
-    exact = exact_entropy(distribution)
-    if exact is not None:
-        return (rate > exact) - (rate < exact)
-    for precision in (80, 160, 320):
-        with localcontext() as context:
-            context.prec = precision
-            difference = decimal_fraction(rate) - entropy(distribution, precision)
-            if abs(difference) > Decimal(10) ** (-precision + 10):
-                return 1 if difference > 0 else -1
-    raise InputError("Не удаётся различить R и H с точностью 320 знаков; для точного R=H используйте --rate H")
-
-
-def code_length(n: int, rate: Fraction | None, distribution: dict[str, Fraction], q: int) -> int:
-    """ℓ = floor(n·R/log₂(q)); rate=None обозначает точное R=H."""
-    if rate == 0:
-        return 0
-    exact = exact_entropy(distribution) if rate is None else rate
-    log_q = rational_log(Fraction(q))
-    if exact is not None and log_q is not None:
-        value = n * exact / log_q
-        return value.numerator // value.denominator
-    positive = [p for p in distribution.values() if p]
-    if rate is None and len(set(positive)) == 1:
-        ratio = log_ratio(len(positive), q)
-        if ratio is not None:
-            value = n * ratio
-            return value.numerator // value.denominator
-    for precision in (80, 160, 320):
-        with localcontext() as context:
-            context.prec = precision
-            r = entropy(distribution, precision) if rate is None else decimal_fraction(rate)
-            value = n * r * Decimal(2).ln() / Decimal(q).ln()
-            lower = int(value.to_integral_value(rounding=ROUND_FLOOR))
-            distance = min(value - lower, lower + 1 - value)
-            if distance > Decimal(10) ** (-precision + max(10, value.adjusted() + 10)):
-                return lower
-    # Нулевая скорость даёт точное нулевое значение при любом q.
-    if (rate == 0) or (rate is None and len(positive) == 1):
-        return 0
-    raise InputError("Не удалось надёжно округлить длину кода с точностью 320 знаков")
+from theory_inf.information import code_length, entropy, log_ratio, rate_relation
 
 
 def block_types(weights: tuple[int, ...], n: int) -> list[tuple[int, tuple[int, ...], int]]:
@@ -227,6 +20,7 @@ def block_types(weights: tuple[int, ...], n: int) -> list[tuple[int, tuple[int, 
 
     def visit(i: int, remaining: int, probability_numerator: int,
               multiplicity: int, counts: tuple[int, ...]):
+        """Распределить оставшиеся позиции между символами с индексами i и выше."""
         if i == len(weights) - 1:
             result.append((probability_numerator * powers[i][remaining],
                            (*counts, remaining), multiplicity))
@@ -270,11 +64,17 @@ def optimal_error(distribution: dict[str, Fraction], n: int, q: int, length: int
 
 def asymptotic(distribution: dict[str, Fraction], rate: Fraction | None,
                epsilon: Fraction, q: int) -> dict:
+    """Ответить, будет ли P_e(n)≤ε для всех достаточно больших n.
+
+    Результат содержит логический ответ и обоснование. Конечная таблица
+    не используется: разбираются R относительно H, точная нулевая ошибка
+    и округление длины при R=H. rate=None задаёт точное равенство R=H.
+    """
     support = sum(p > 0 for p in distribution.values())
     relation = rate_relation(rate, distribution)
-    if epsilon == 1 or support == 1:
+    if epsilon == Fraction(1) or support == 1:
         return {"eventually_below_epsilon": True, "reason": "Ошибка всегда не больше ε"}
-    if epsilon == 0:
+    if epsilon == Fraction(0):
         uniform = {a: Fraction(1, support) for a, p in distribution.items() if p}
         relation_to_support = rate_relation(rate, uniform) if rate is not None else (
             0 if len({p for p in distribution.values() if p}) == 1 else -1)
@@ -303,6 +103,13 @@ def asymptotic(distribution: dict[str, Fraction], rate: Fraction | None,
 
 def analyze_uniform(distribution: dict[str, Fraction], rate: Fraction | None,
                     epsilon: Fraction, q: int, n_max: int) -> tuple[dict, dict]:
+    """Вернуть таблицу оптимальных ошибок и отдельное описание построенного кода.
+
+    Для n=1,…,n_max вычисляются длина слова, число выбранных блоков и P_e.
+    minimum_n относится только к этому отрезку; асимптотический ответ
+    вычисляется отдельно. Второй словарь задаёт порядок блоков и кодовых слов,
+    позволяющий восстановить код без сохранения экспоненциальной кодовой книги.
+    """
     if rate is not None and rate < 0:
         raise InputError("R должен быть неотрицательным")
     if not 0 <= epsilon <= 1:

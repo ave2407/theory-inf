@@ -10,10 +10,12 @@ ROOT = Path(__file__).resolve().parents[1]
 
 
 def png_chunk(kind: bytes, data: bytes) -> bytes:
+    """Собрать PNG-блок: длина данных, четырёхбайтовый тип, данные и CRC32."""
     return struct.pack(">I", len(data)) + kind + data + struct.pack(">I", zlib.crc32(kind + data))
 
 
 def main():
+    """Записать семь контрольных файлов, включая PNG с seed; реальные PDF не менять."""
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--seed", type=int, default=2)
     args = parser.parse_args()

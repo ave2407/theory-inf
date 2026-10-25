@@ -15,6 +15,11 @@ from theory_inf.huffman import canonical_codes, code_lengths
 
 
 def main():
+    """Загрузить переданный исходник Nayuki и сверить длины и слова на 52 наборах частот.
+
+    Пустая модель и один символ исключены из сравнения как намеренные отличия.
+    SHA-256 исходника и итог записываются в reference_validation.json.
+    """
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("reference", type=Path)
     parser.add_argument("--seed", type=int, default=2)

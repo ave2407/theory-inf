@@ -1,9 +1,5 @@
 """Длины и канонические коды Хаффмана для байтового алфавита."""
 
-# Adapted from Project Nayuki, Reference Huffman coding.
-# Copyright (c) Project Nayuki. MIT License: SOURCES.md.
-# Изменения относительно исходника перечислены в SOURCES.md.
-
 import heapq
 from typing import BinaryIO
 
@@ -11,7 +7,11 @@ from theory_inf.distributions import InputError
 
 
 def code_lengths(frequencies: list[int]) -> dict[int, int]:
-    """Слить два самых лёгких поддерева, затем вернуть глубину каждого листа."""
+    """По 256 частотам байтов вернуть длины слов только для встречающихся символов.
+
+    Два самых лёгких поддерева сливаются, глубина листа становится длиной слова.
+    Для пустого входа результат пуст; единственному символу назначается длина 0.
+    """
     if len(frequencies) != 256 or any(type(n) is not int or n < 0 for n in frequencies):
         raise InputError("Нужны 256 неотрицательных целых частот байтов")
     queue = [(freq, symbol, symbol) for symbol, freq in enumerate(frequencies) if freq]
@@ -74,6 +74,11 @@ def canonical_codes(lengths: dict[int, int]) -> dict[int, tuple[int, int]]:
 
 
 def decoding_tree(codes: dict[int, tuple[int, int]]) -> dict:
+    """Построить дерево из проверенных кодов: ключи 0/1 — ветви, целые листья — байты.
+
+    Пустое кодовое слово не поддерживается: один символ восстанавливается
+    отдельно по размеру исходного файла из заголовка.
+    """
     tree = {}
     for symbol, (code, length) in codes.items():
         if not length:
@@ -86,7 +91,12 @@ def decoding_tree(codes: dict[int, tuple[int, int]]) -> dict:
 
 
 class BitWriter:
-    """MSB-first, нулевое дополнение справа, буферизованный вывод."""
+    """Записывать кодовые слова произвольной длины в бинарный поток, MSB-first.
+
+    buffer хранит готовые байты, pending/pending_bits — неполный хвост,
+    total_bits считает полезные биты без заполнения. После всех write
+    вызывается finish; переданный поток остаётся открытым.
+    """
 
     def __init__(self, stream: BinaryIO, buffer_size: int = 65536):
         self.stream = stream
@@ -97,6 +107,7 @@ class BitWriter:
         self.total_bits = 0
 
     def write(self, code: int, length: int) -> None:
+        """Приписать length битов проверенного слова code; готовые байты буферизовать."""
         # pending хранит ещё не выведенный хвост, pending_bits — его длину.
         self.pending = (self.pending << length) | code
         self.pending_bits += length
@@ -110,6 +121,7 @@ class BitWriter:
             self.buffer.clear()
 
     def finish(self) -> None:
+        """Дополнить неполный байт нулями справа и записать оставшийся буфер."""
         if self.pending_bits:
             self.buffer.append(self.pending << (8 - self.pending_bits))
         self.stream.write(self.buffer)

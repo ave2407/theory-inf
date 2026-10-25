@@ -11,6 +11,7 @@ from tools.build_examples import examples, write
 
 
 def main():
+    """Записать источники задачи 1.2 для s=2 и отдельный тест k=5 для замера времени."""
     directory = ROOT / "examples/task_1_2"
     directory.mkdir(parents=True, exist_ok=True)
     iid = examples()["iid"]
