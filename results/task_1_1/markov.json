@@ -1,0 +1,98 @@
+{
+  "seed": 2,
+  "word": [
+    "A",
+    "B"
+  ],
+  "N": 1000000,
+  "exact_first": {
+    "fraction": "1/9",
+    "decimal": 0.1111111111111111
+  },
+  "exact_period_average": {
+    "fraction": "1/9",
+    "decimal": 0.1111111111111111
+  },
+  "frequency": {
+    "fraction": "274/2457",
+    "decimal": 0.11151811151811152
+  },
+  "table": [
+    {
+      "N": 100,
+      "frequency": {
+        "fraction": "14/99",
+        "decimal": 0.1414141414141414
+      },
+      "error_first": {
+        "fraction": "1/33",
+        "decimal": 0.030303030303030304
+      },
+      "error_period_average": {
+        "fraction": "1/33",
+        "decimal": 0.030303030303030304
+      }
+    },
+    {
+      "N": 1000,
+      "frequency": {
+        "fraction": "104/999",
+        "decimal": 0.1041041041041041
+      },
+      "error_first": {
+        "fraction": "7/999",
+        "decimal": 0.007007007007007007
+      },
+      "error_period_average": {
+        "fraction": "7/999",
+        "decimal": 0.007007007007007007
+      }
+    },
+    {
+      "N": 10000,
+      "frequency": {
+        "fraction": "1129/9999",
+        "decimal": 0.11291129112911291
+      },
+      "error_first": {
+        "fraction": "2/1111",
+        "decimal": 0.0018001800180018
+      },
+      "error_period_average": {
+        "fraction": "2/1111",
+        "decimal": 0.0018001800180018
+      }
+    },
+    {
+      "N": 100000,
+      "frequency": {
+        "fraction": "11023/99999",
+        "decimal": 0.11023110231102311
+      },
+      "error_first": {
+        "fraction": "88/99999",
+        "decimal": 0.0008800088000880009
+      },
+      "error_period_average": {
+        "fraction": "88/99999",
+        "decimal": 0.0008800088000880009
+      }
+    },
+    {
+      "N": 1000000,
+      "frequency": {
+        "fraction": "274/2457",
+        "decimal": 0.11151811151811152
+      },
+      "error_first": {
+        "fraction": "1/2457",
+        "decimal": 0.000407000407000407
+      },
+      "error_period_average": {
+        "fraction": "1/2457",
+        "decimal": 0.000407000407000407
+      }
+    }
+  ],
+  "note": "Таблица использует префиксы одной реализации. null: N меньше длины блока. Для исходного формата частота сходится к среднему по периоду; для неэргодического расширения общий ансамблевый предел не гарантирован."
+}

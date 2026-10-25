@@ -5,3 +5,4 @@ __pycache__/
 *.py[cod]
 .coverage
 tmp/
+docs/DEFENSE_1_1.md

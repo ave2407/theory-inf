@@ -1,0 +1,98 @@
+{
+  "seed": 2,
+  "word": [
+    "A",
+    "A"
+  ],
+  "N": 1000000,
+  "exact_first": {
+    "fraction": "1",
+    "decimal": 1.0
+  },
+  "exact_period_average": {
+    "fraction": "1",
+    "decimal": 1.0
+  },
+  "frequency": {
+    "fraction": "1",
+    "decimal": 1.0
+  },
+  "table": [
+    {
+      "N": 100,
+      "frequency": {
+        "fraction": "1",
+        "decimal": 1.0
+      },
+      "error_first": {
+        "fraction": "0",
+        "decimal": 0.0
+      },
+      "error_period_average": {
+        "fraction": "0",
+        "decimal": 0.0
+      }
+    },
+    {
+      "N": 1000,
+      "frequency": {
+        "fraction": "1",
+        "decimal": 1.0
+      },
+      "error_first": {
+        "fraction": "0",
+        "decimal": 0.0
+      },
+      "error_period_average": {
+        "fraction": "0",
+        "decimal": 0.0
+      }
+    },
+    {
+      "N": 10000,
+      "frequency": {
+        "fraction": "1",
+        "decimal": 1.0
+      },
+      "error_first": {
+        "fraction": "0",
+        "decimal": 0.0
+      },
+      "error_period_average": {
+        "fraction": "0",
+        "decimal": 0.0
+      }
+    },
+    {
+      "N": 100000,
+      "frequency": {
+        "fraction": "1",
+        "decimal": 1.0
+      },
+      "error_first": {
+        "fraction": "0",
+        "decimal": 0.0
+      },
+      "error_period_average": {
+        "fraction": "0",
+        "decimal": 0.0
+      }
+    },
+    {
+      "N": 1000000,
+      "frequency": {
+        "fraction": "1",
+        "decimal": 1.0
+      },
+      "error_first": {
+        "fraction": "0",
+        "decimal": 0.0
+      },
+      "error_period_average": {
+        "fraction": "0",
+        "decimal": 0.0
+      }
+    }
+  ],
+  "note": "Таблица использует префиксы одной реализации. null: N меньше длины блока. Для исходного формата частота сходится к среднему по периоду; для неэргодического расширения общий ансамблевый предел не гарантирован."
+}
