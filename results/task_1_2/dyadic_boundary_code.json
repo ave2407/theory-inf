@@ -1,0 +1,277 @@
+{
+  "format": "uniform-types-v1",
+  "alphabet": [
+    "A",
+    "B",
+    "C"
+  ],
+  "distribution": {
+    "A": "1/2",
+    "B": "1/4",
+    "C": "1/4"
+  },
+  "rate": "3/2",
+  "q": 5,
+  "ordering": [
+    "Для каждого n перечислить типы (n_1,...,n_k) по алфавиту положительной вероятности.",
+    "Сортировать по убыванию ∏p_i^n_i; при равенстве — по возрастанию вектора типа.",
+    "Внутри типа сортировать блоки лексикографически по alphabet.",
+    "Взять первые selected_blocks блоков; нулевые вероятности не кодируются.",
+    "Блоку с рангом j от 0 назначить q-ичную запись j, дополненную нулями слева до length.",
+    "При length=0 единственное кодовое слово — пустой массив цифр.",
+    "Цифры кодового алфавита — целые числа 0,...,q−1; кодовое слово — массив цифр.",
+    "Обратное отображение: q-ичное слово → ранг → блок в том же порядке; неиспользованный ранг — ошибка."
+  ],
+  "blocks": [
+    {
+      "n": 1,
+      "length": 0,
+      "selected_blocks": 1
+    },
+    {
+      "n": 2,
+      "length": 1,
+      "selected_blocks": 5
+    },
+    {
+      "n": 3,
+      "length": 1,
+      "selected_blocks": 5
+    },
+    {
+      "n": 4,
+      "length": 2,
+      "selected_blocks": 25
+    },
+    {
+      "n": 5,
+      "length": 3,
+      "selected_blocks": 125
+    },
+    {
+      "n": 6,
+      "length": 3,
+      "selected_blocks": 125
+    },
+    {
+      "n": 7,
+      "length": 4,
+      "selected_blocks": 625
+    },
+    {
+      "n": 8,
+      "length": 5,
+      "selected_blocks": 3125
+    },
+    {
+      "n": 9,
+      "length": 5,
+      "selected_blocks": 3125
+    },
+    {
+      "n": 10,
+      "length": 6,
+      "selected_blocks": 15625
+    },
+    {
+      "n": 11,
+      "length": 7,
+      "selected_blocks": 78125
+    },
+    {
+      "n": 12,
+      "length": 7,
+      "selected_blocks": 78125
+    },
+    {
+      "n": 13,
+      "length": 8,
+      "selected_blocks": 390625
+    },
+    {
+      "n": 14,
+      "length": 9,
+      "selected_blocks": 1953125
+    },
+    {
+      "n": 15,
+      "length": 9,
+      "selected_blocks": 1953125
+    },
+    {
+      "n": 16,
+      "length": 10,
+      "selected_blocks": 9765625
+    },
+    {
+      "n": 17,
+      "length": 10,
+      "selected_blocks": 9765625
+    },
+    {
+      "n": 18,
+      "length": 11,
+      "selected_blocks": 48828125
+    },
+    {
+      "n": 19,
+      "length": 12,
+      "selected_blocks": 244140625
+    },
+    {
+      "n": 20,
+      "length": 12,
+      "selected_blocks": 244140625
+    },
+    {
+      "n": 21,
+      "length": 13,
+      "selected_blocks": 1220703125
+    },
+    {
+      "n": 22,
+      "length": 14,
+      "selected_blocks": 6103515625
+    },
+    {
+      "n": 23,
+      "length": 14,
+      "selected_blocks": 6103515625
+    },
+    {
+      "n": 24,
+      "length": 15,
+      "selected_blocks": 30517578125
+    },
+    {
+      "n": 25,
+      "length": 16,
+      "selected_blocks": 152587890625
+    },
+    {
+      "n": 26,
+      "length": 16,
+      "selected_blocks": 152587890625
+    },
+    {
+      "n": 27,
+      "length": 17,
+      "selected_blocks": 762939453125
+    },
+    {
+      "n": 28,
+      "length": 18,
+      "selected_blocks": 3814697265625
+    },
+    {
+      "n": 29,
+      "length": 18,
+      "selected_blocks": 3814697265625
+    },
+    {
+      "n": 30,
+      "length": 19,
+      "selected_blocks": 19073486328125
+    },
+    {
+      "n": 31,
+      "length": 20,
+      "selected_blocks": 95367431640625
+    },
+    {
+      "n": 32,
+      "length": 20,
+      "selected_blocks": 95367431640625
+    },
+    {
+      "n": 33,
+      "length": 21,
+      "selected_blocks": 476837158203125
+    },
+    {
+      "n": 34,
+      "length": 21,
+      "selected_blocks": 476837158203125
+    },
+    {
+      "n": 35,
+      "length": 22,
+      "selected_blocks": 2384185791015625
+    },
+    {
+      "n": 36,
+      "length": 23,
+      "selected_blocks": 11920928955078125
+    },
+    {
+      "n": 37,
+      "length": 23,
+      "selected_blocks": 11920928955078125
+    },
+    {
+      "n": 38,
+      "length": 24,
+      "selected_blocks": 59604644775390625
+    },
+    {
+      "n": 39,
+      "length": 25,
+      "selected_blocks": 298023223876953125
+    },
+    {
+      "n": 40,
+      "length": 25,
+      "selected_blocks": 298023223876953125
+    },
+    {
+      "n": 41,
+      "length": 26,
+      "selected_blocks": 1490116119384765625
+    },
+    {
+      "n": 42,
+      "length": 27,
+      "selected_blocks": 7450580596923828125
+    },
+    {
+      "n": 43,
+      "length": 27,
+      "selected_blocks": 7450580596923828125
+    },
+    {
+      "n": 44,
+      "length": 28,
+      "selected_blocks": 37252902984619140625
+    },
+    {
+      "n": 45,
+      "length": 29,
+      "selected_blocks": 186264514923095703125
+    },
+    {
+      "n": 46,
+      "length": 29,
+      "selected_blocks": 186264514923095703125
+    },
+    {
+      "n": 47,
+      "length": 30,
+      "selected_blocks": 931322574615478515625
+    },
+    {
+      "n": 48,
+      "length": 31,
+      "selected_blocks": 4656612873077392578125
+    },
+    {
+      "n": 49,
+      "length": 31,
+      "selected_blocks": 4656612873077392578125
+    },
+    {
+      "n": 50,
+      "length": 32,
+      "selected_blocks": 23283064365386962890625
+    }
+  ]
+}

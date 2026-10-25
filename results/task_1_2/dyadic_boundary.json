@@ -1,0 +1,520 @@
+{
+  "distribution": {
+    "A": "1/2",
+    "B": "1/4",
+    "C": "1/4"
+  },
+  "entropy_bits": "1.5",
+  "rate": "3/2",
+  "q": 5,
+  "epsilon": "1/10000",
+  "n_max": 50,
+  "table": [
+    {
+      "n": 1,
+      "length": 0,
+      "selected_blocks": 1,
+      "error": {
+        "fraction": "1/2",
+        "decimal": 0.5
+      },
+      "meets_epsilon": false
+    },
+    {
+      "n": 2,
+      "length": 1,
+      "selected_blocks": 5,
+      "error": {
+        "fraction": "1/4",
+        "decimal": 0.25
+      },
+      "meets_epsilon": false
+    },
+    {
+      "n": 3,
+      "length": 1,
+      "selected_blocks": 5,
+      "error": {
+        "fraction": "5/8",
+        "decimal": 0.625
+      },
+      "meets_epsilon": false
+    },
+    {
+      "n": 4,
+      "length": 2,
+      "selected_blocks": 25,
+      "error": {
+        "fraction": "7/16",
+        "decimal": 0.4375
+      },
+      "meets_epsilon": false
+    },
+    {
+      "n": 5,
+      "length": 3,
+      "selected_blocks": 125,
+      "error": {
+        "fraction": "27/128",
+        "decimal": 0.2109375
+      },
+      "meets_epsilon": false
+    },
+    {
+      "n": 6,
+      "length": 3,
+      "selected_blocks": 125,
+      "error": {
+        "fraction": "71/128",
+        "decimal": 0.5546875
+      },
+      "meets_epsilon": false
+    },
+    {
+      "n": 7,
+      "length": 4,
+      "selected_blocks": 625,
+      "error": {
+        "fraction": "389/1024",
+        "decimal": 0.3798828125
+      },
+      "meets_epsilon": false
+    },
+    {
+      "n": 8,
+      "length": 5,
+      "selected_blocks": 3125,
+      "error": {
+        "fraction": "387/2048",
+        "decimal": 0.18896484375
+      },
+      "meets_epsilon": false
+    },
+    {
+      "n": 9,
+      "length": 5,
+      "selected_blocks": 3125,
+      "error": {
+        "fraction": "3959/8192",
+        "decimal": 0.4832763671875
+      },
+      "meets_epsilon": false
+    },
+    {
+      "n": 10,
+      "length": 6,
+      "selected_blocks": 15625,
+      "error": {
+        "fraction": "677/2048",
+        "decimal": 0.33056640625
+      },
+      "meets_epsilon": false
+    },
+    {
+      "n": 11,
+      "length": 7,
+      "selected_blocks": 78125,
+      "error": {
+        "fraction": "22503/131072",
+        "decimal": 0.17168426513671875
+      },
+      "meets_epsilon": false
+    },
+    {
+      "n": 12,
+      "length": 7,
+      "selected_blocks": 78125,
+      "error": {
+        "fraction": "29457/65536",
+        "decimal": 0.4494781494140625
+      },
+      "meets_epsilon": false
+    },
+    {
+      "n": 13,
+      "length": 8,
+      "selected_blocks": 390625,
+      "error": {
+        "fraction": "301689/1048576",
+        "decimal": 0.28771305084228516
+      },
+      "meets_epsilon": false
+    },
+    {
+      "n": 14,
+      "length": 9,
+      "selected_blocks": 1953125,
+      "error": {
+        "fraction": "327173/2097152",
+        "decimal": 0.15600824356079102
+      },
+      "meets_epsilon": false
+    },
+    {
+      "n": 15,
+      "length": 9,
+      "selected_blocks": 1953125,
+      "error": {
+        "fraction": "1753603/4194304",
+        "decimal": 0.4180915355682373
+      },
+      "meets_epsilon": false
+    },
+    {
+      "n": 16,
+      "length": 10,
+      "selected_blocks": 9765625,
+      "error": {
+        "fraction": "1145289/4194304",
+        "decimal": 0.2730581760406494
+      },
+      "meets_epsilon": false
+    },
+    {
+      "n": 17,
+      "length": 10,
+      "selected_blocks": 9765625,
+      "error": {
+        "fraction": "16767845/33554432",
+        "decimal": 0.4997207224369049
+      },
+      "meets_epsilon": false
+    },
+    {
+      "n": 18,
+      "length": 11,
+      "selected_blocks": 48828125,
+      "error": {
+        "fraction": "25545883/67108864",
+        "decimal": 0.38066332042217255
+      },
+      "meets_epsilon": false
+    },
+    {
+      "n": 19,
+      "length": 12,
+      "selected_blocks": 244140625,
+      "error": {
+        "fraction": "136705221/536870912",
+        "decimal": 0.25463331677019596
+      },
+      "meets_epsilon": false
+    },
+    {
+      "n": 20,
+      "length": 12,
+      "selected_blocks": 244140625,
+      "error": {
+        "fraction": "8102437/16777216",
+        "decimal": 0.4829428791999817
+      },
+      "meets_epsilon": false
+    },
+    {
+      "n": 21,
+      "length": 13,
+      "selected_blocks": 1220703125,
+      "error": {
+        "fraction": "754831247/2147483648",
+        "decimal": 0.3514956901781261
+      },
+      "meets_epsilon": false
+    },
+    {
+      "n": 22,
+      "length": 14,
+      "selected_blocks": 6103515625,
+      "error": {
+        "fraction": "500578147/2147483648",
+        "decimal": 0.23309986433014274
+      },
+      "meets_epsilon": false
+    },
+    {
+      "n": 23,
+      "length": 14,
+      "selected_blocks": 6103515625,
+      "error": {
+        "fraction": "7799964465/17179869184",
+        "decimal": 0.4540176867158152
+      },
+      "meets_epsilon": false
+    },
+    {
+      "n": 24,
+      "length": 15,
+      "selected_blocks": 30517578125,
+      "error": {
+        "fraction": "11558628309/34359738368",
+        "decimal": 0.3364003586175386
+      },
+      "meets_epsilon": false
+    },
+    {
+      "n": 25,
+      "length": 16,
+      "selected_blocks": 152587890625,
+      "error": {
+        "fraction": "115754687857/549755813888",
+        "decimal": 0.21055655062264123
+      },
+      "meets_epsilon": false
+    },
+    {
+      "n": 26,
+      "length": 16,
+      "selected_blocks": 152587890625,
+      "error": {
+        "fraction": "57511158277/137438953472",
+        "decimal": 0.4184487499660463
+      },
+      "meets_epsilon": false
+    },
+    {
+      "n": 27,
+      "length": 17,
+      "selected_blocks": 762939453125,
+      "error": {
+        "fraction": "690707179643/2199023255552",
+        "decimal": 0.3140972601809153
+      },
+      "meets_epsilon": false
+    },
+    {
+      "n": 28,
+      "length": 18,
+      "selected_blocks": 3814697265625,
+      "error": {
+        "fraction": "448810341035/2199023255552",
+        "decimal": 0.20409531363611677
+      },
+      "meets_epsilon": false
+    },
+    {
+      "n": 29,
+      "length": 18,
+      "selected_blocks": 3814697265625,
+      "error": {
+        "fraction": "3559226132957/8796093022208",
+        "decimal": 0.4046371637920174
+      },
+      "meets_epsilon": false
+    },
+    {
+      "n": 30,
+      "length": 19,
+      "selected_blocks": 19073486328125,
+      "error": {
+        "fraction": "10137917651423/35184372088832",
+        "decimal": 0.2881369497181083
+      },
+      "meets_epsilon": false
+    },
+    {
+      "n": 31,
+      "length": 20,
+      "selected_blocks": 95367431640625,
+      "error": {
+        "fraction": "54476498815485/281474976710656",
+        "decimal": 0.19353940251493285
+      },
+      "meets_epsilon": false
+    },
+    {
+      "n": 32,
+      "length": 20,
+      "selected_blocks": 95367431640625,
+      "error": {
+        "fraction": "13530470766213/35184372088832",
+        "decimal": 0.38455910857388176
+      },
+      "meets_epsilon": false
+    },
+    {
+      "n": 33,
+      "length": 21,
+      "selected_blocks": 476837158203125,
+      "error": {
+        "fraction": "313329948706375/1125899906842624",
+        "decimal": 0.27829289868674945
+      },
+      "meets_epsilon": false
+    },
+    {
+      "n": 34,
+      "length": 21,
+      "selected_blocks": 476837158203125,
+      "error": {
+        "fraction": "260164961665253/562949953421312",
+        "decimal": 0.46214580902637614
+      },
+      "meets_epsilon": false
+    },
+    {
+      "n": 35,
+      "length": 22,
+      "selected_blocks": 2384185791015625,
+      "error": {
+        "fraction": "3227686703257193/9007199254740992",
+        "decimal": 0.3583452094232601
+      },
+      "meets_epsilon": false
+    },
+    {
+      "n": 36,
+      "length": 23,
+      "selected_blocks": 11920928955078125,
+      "error": {
+        "fraction": "4774345898708025/18014398509481984",
+        "decimal": 0.26502943721351674
+      },
+      "meets_epsilon": false
+    },
+    {
+      "n": 37,
+      "length": 23,
+      "selected_blocks": 11920928955078125,
+      "error": {
+        "fraction": "16057538310659907/36028797018963968",
+        "decimal": 0.44568621878237924
+      },
+      "meets_epsilon": false
+    },
+    {
+      "n": 38,
+      "length": 24,
+      "selected_blocks": 59604644775390625,
+      "error": {
+        "fraction": "12408327517397495/36028797018963968",
+        "decimal": 0.3444002726726152
+      },
+      "meets_epsilon": false
+    },
+    {
+      "n": 39,
+      "length": 25,
+      "selected_blocks": 298023223876953125,
+      "error": {
+        "fraction": "285053581335177715/1152921504606846976",
+        "decimal": 0.2472445697266985
+      },
+      "meets_epsilon": false
+    },
+    {
+      "n": 40,
+      "length": 25,
+      "selected_blocks": 298023223876953125,
+      "error": {
+        "fraction": "242756246094467327/576460752303423488",
+        "decimal": 0.42111495904007556
+      },
+      "meets_epsilon": false
+    },
+    {
+      "n": 41,
+      "length": 26,
+      "selected_blocks": 1490116119384765625,
+      "error": {
+        "fraction": "1525044141420855765/4611686018427387904",
+        "decimal": 0.33069123425295655
+      },
+      "meets_epsilon": false
+    },
+    {
+      "n": 42,
+      "length": 27,
+      "selected_blocks": 7450580596923828125,
+      "error": {
+        "fraction": "2156680108503713891/9223372036854775808",
+        "decimal": 0.2338277258996
+      },
+      "meets_epsilon": false
+    },
+    {
+      "n": 43,
+      "length": 27,
+      "selected_blocks": 7450580596923828125,
+      "error": {
+        "fraction": "7434031621283953135/18446744073709551616",
+        "decimal": 0.4029996617060999
+      },
+      "meets_epsilon": false
+    },
+    {
+      "n": 44,
+      "length": 28,
+      "selected_blocks": 37252902984619140625,
+      "error": {
+        "fraction": "2869245400558486115/9223372036854775808",
+        "decimal": 0.3110842096679552
+      },
+      "meets_epsilon": false
+    },
+    {
+      "n": 45,
+      "length": 29,
+      "selected_blocks": 186264514923095703125,
+      "error": {
+        "fraction": "133776903022145457279/590295810358705651712",
+        "decimal": 0.22662688888280116
+      },
+      "meets_epsilon": false
+    },
+    {
+      "n": 46,
+      "length": 29,
+      "selected_blocks": 186264514923095703125,
+      "error": {
+        "fraction": "115200307906835829225/295147905179352825856",
+        "decimal": 0.3903138253237201
+      },
+      "meets_epsilon": false
+    },
+    {
+      "n": 47,
+      "length": 30,
+      "selected_blocks": 931322574615478515625,
+      "error": {
+        "fraction": "699362496013326626081/2361183241434822606848",
+        "decimal": 0.29619153809864596
+      },
+      "meets_epsilon": false
+    },
+    {
+      "n": 48,
+      "length": 31,
+      "selected_blocks": 4656612873077392578125,
+      "error": {
+        "fraction": "2025817896790494963677/9444732965739290427392",
+        "decimal": 0.21449181296487013
+      },
+      "meets_epsilon": false
+    },
+    {
+      "n": 49,
+      "length": 31,
+      "selected_blocks": 4656612873077392578125,
+      "error": {
+        "fraction": "6997956993132435932539/18889465931478580854784",
+        "decimal": 0.3704687585407381
+      },
+      "meets_epsilon": false
+    },
+    {
+      "n": 50,
+      "length": 32,
+      "selected_blocks": 23283064365386962890625,
+      "error": {
+        "fraction": "5425873706045014941321/18889465931478580854784",
+        "decimal": 0.28724336229130765
+      },
+      "meets_epsilon": false
+    }
+  ],
+  "minimum_n": null,
+  "finite_interval_note": "minimum_n=null означает отсутствие подходящего n только на [1,n_max]",
+  "asymptotic": {
+    "eventually_below_epsilon": false,
+    "reason": "R=H, неравномерный iid-источник: P_e→1/2; при ε=1/2 достаточность следует из поправки −(log₂ n)/2 к log₂ M*(n,ε)"
+  }
+}

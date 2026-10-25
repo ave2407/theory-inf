@@ -2,6 +2,7 @@
 
 from bisect import bisect_right
 from dataclasses import dataclass
+from decimal import Decimal
 from fractions import Fraction
 from math import lcm
 import random
@@ -10,6 +11,12 @@ import re
 
 class InputError(ValueError):
     """Ошибка пользовательских данных с готовым диагностическим сообщением."""
+
+
+def fraction_text(value: Fraction) -> str:
+    # Decimal(int) точен и обходит ограничение str(int) на 4300 цифр.
+    numerator = str(Decimal(value.numerator))
+    return numerator if value.denominator == 1 else numerator + "/" + str(Decimal(value.denominator))
 
 
 def object_map(value: object, location: str) -> dict:

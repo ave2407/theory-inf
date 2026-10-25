@@ -1,0 +1,520 @@
+{
+  "distribution": {
+    "A": "13/24",
+    "B": "7/24",
+    "C": "1/6"
+  },
+  "entropy_bits": "1.4284124677945967299015577053661562088574452574822114233832081585223747541166636",
+  "rate": "2",
+  "q": 5,
+  "epsilon": "1/10000",
+  "n_max": 50,
+  "table": [
+    {
+      "n": 1,
+      "length": 0,
+      "selected_blocks": 1,
+      "error": {
+        "fraction": "11/24",
+        "decimal": 0.4583333333333333
+      },
+      "meets_epsilon": false
+    },
+    {
+      "n": 2,
+      "length": 1,
+      "selected_blocks": 5,
+      "error": {
+        "fraction": "121/576",
+        "decimal": 0.21006944444444445
+      },
+      "meets_epsilon": false
+    },
+    {
+      "n": 3,
+      "length": 2,
+      "selected_blocks": 25,
+      "error": {
+        "fraction": "11/864",
+        "decimal": 0.01273148148148148
+      },
+      "meets_epsilon": false
+    },
+    {
+      "n": 4,
+      "length": 3,
+      "selected_blocks": 81,
+      "error": {
+        "fraction": "0",
+        "decimal": 0.0
+      },
+      "meets_epsilon": true
+    },
+    {
+      "n": 5,
+      "length": 4,
+      "selected_blocks": 243,
+      "error": {
+        "fraction": "0",
+        "decimal": 0.0
+      },
+      "meets_epsilon": true
+    },
+    {
+      "n": 6,
+      "length": 5,
+      "selected_blocks": 729,
+      "error": {
+        "fraction": "0",
+        "decimal": 0.0
+      },
+      "meets_epsilon": true
+    },
+    {
+      "n": 7,
+      "length": 6,
+      "selected_blocks": 2187,
+      "error": {
+        "fraction": "0",
+        "decimal": 0.0
+      },
+      "meets_epsilon": true
+    },
+    {
+      "n": 8,
+      "length": 6,
+      "selected_blocks": 6561,
+      "error": {
+        "fraction": "0",
+        "decimal": 0.0
+      },
+      "meets_epsilon": true
+    },
+    {
+      "n": 9,
+      "length": 7,
+      "selected_blocks": 19683,
+      "error": {
+        "fraction": "0",
+        "decimal": 0.0
+      },
+      "meets_epsilon": true
+    },
+    {
+      "n": 10,
+      "length": 8,
+      "selected_blocks": 59049,
+      "error": {
+        "fraction": "0",
+        "decimal": 0.0
+      },
+      "meets_epsilon": true
+    },
+    {
+      "n": 11,
+      "length": 9,
+      "selected_blocks": 177147,
+      "error": {
+        "fraction": "0",
+        "decimal": 0.0
+      },
+      "meets_epsilon": true
+    },
+    {
+      "n": 12,
+      "length": 10,
+      "selected_blocks": 531441,
+      "error": {
+        "fraction": "0",
+        "decimal": 0.0
+      },
+      "meets_epsilon": true
+    },
+    {
+      "n": 13,
+      "length": 11,
+      "selected_blocks": 1594323,
+      "error": {
+        "fraction": "0",
+        "decimal": 0.0
+      },
+      "meets_epsilon": true
+    },
+    {
+      "n": 14,
+      "length": 12,
+      "selected_blocks": 4782969,
+      "error": {
+        "fraction": "0",
+        "decimal": 0.0
+      },
+      "meets_epsilon": true
+    },
+    {
+      "n": 15,
+      "length": 12,
+      "selected_blocks": 14348907,
+      "error": {
+        "fraction": "0",
+        "decimal": 0.0
+      },
+      "meets_epsilon": true
+    },
+    {
+      "n": 16,
+      "length": 13,
+      "selected_blocks": 43046721,
+      "error": {
+        "fraction": "0",
+        "decimal": 0.0
+      },
+      "meets_epsilon": true
+    },
+    {
+      "n": 17,
+      "length": 14,
+      "selected_blocks": 129140163,
+      "error": {
+        "fraction": "0",
+        "decimal": 0.0
+      },
+      "meets_epsilon": true
+    },
+    {
+      "n": 18,
+      "length": 15,
+      "selected_blocks": 387420489,
+      "error": {
+        "fraction": "0",
+        "decimal": 0.0
+      },
+      "meets_epsilon": true
+    },
+    {
+      "n": 19,
+      "length": 16,
+      "selected_blocks": 1162261467,
+      "error": {
+        "fraction": "0",
+        "decimal": 0.0
+      },
+      "meets_epsilon": true
+    },
+    {
+      "n": 20,
+      "length": 17,
+      "selected_blocks": 3486784401,
+      "error": {
+        "fraction": "0",
+        "decimal": 0.0
+      },
+      "meets_epsilon": true
+    },
+    {
+      "n": 21,
+      "length": 18,
+      "selected_blocks": 10460353203,
+      "error": {
+        "fraction": "0",
+        "decimal": 0.0
+      },
+      "meets_epsilon": true
+    },
+    {
+      "n": 22,
+      "length": 18,
+      "selected_blocks": 31381059609,
+      "error": {
+        "fraction": "0",
+        "decimal": 0.0
+      },
+      "meets_epsilon": true
+    },
+    {
+      "n": 23,
+      "length": 19,
+      "selected_blocks": 94143178827,
+      "error": {
+        "fraction": "0",
+        "decimal": 0.0
+      },
+      "meets_epsilon": true
+    },
+    {
+      "n": 24,
+      "length": 20,
+      "selected_blocks": 282429536481,
+      "error": {
+        "fraction": "0",
+        "decimal": 0.0
+      },
+      "meets_epsilon": true
+    },
+    {
+      "n": 25,
+      "length": 21,
+      "selected_blocks": 847288609443,
+      "error": {
+        "fraction": "0",
+        "decimal": 0.0
+      },
+      "meets_epsilon": true
+    },
+    {
+      "n": 26,
+      "length": 22,
+      "selected_blocks": 2541865828329,
+      "error": {
+        "fraction": "0",
+        "decimal": 0.0
+      },
+      "meets_epsilon": true
+    },
+    {
+      "n": 27,
+      "length": 23,
+      "selected_blocks": 7625597484987,
+      "error": {
+        "fraction": "0",
+        "decimal": 0.0
+      },
+      "meets_epsilon": true
+    },
+    {
+      "n": 28,
+      "length": 24,
+      "selected_blocks": 22876792454961,
+      "error": {
+        "fraction": "0",
+        "decimal": 0.0
+      },
+      "meets_epsilon": true
+    },
+    {
+      "n": 29,
+      "length": 24,
+      "selected_blocks": 68630377364883,
+      "error": {
+        "fraction": "0",
+        "decimal": 0.0
+      },
+      "meets_epsilon": true
+    },
+    {
+      "n": 30,
+      "length": 25,
+      "selected_blocks": 205891132094649,
+      "error": {
+        "fraction": "0",
+        "decimal": 0.0
+      },
+      "meets_epsilon": true
+    },
+    {
+      "n": 31,
+      "length": 26,
+      "selected_blocks": 617673396283947,
+      "error": {
+        "fraction": "0",
+        "decimal": 0.0
+      },
+      "meets_epsilon": true
+    },
+    {
+      "n": 32,
+      "length": 27,
+      "selected_blocks": 1853020188851841,
+      "error": {
+        "fraction": "0",
+        "decimal": 0.0
+      },
+      "meets_epsilon": true
+    },
+    {
+      "n": 33,
+      "length": 28,
+      "selected_blocks": 5559060566555523,
+      "error": {
+        "fraction": "0",
+        "decimal": 0.0
+      },
+      "meets_epsilon": true
+    },
+    {
+      "n": 34,
+      "length": 29,
+      "selected_blocks": 16677181699666569,
+      "error": {
+        "fraction": "0",
+        "decimal": 0.0
+      },
+      "meets_epsilon": true
+    },
+    {
+      "n": 35,
+      "length": 30,
+      "selected_blocks": 50031545098999707,
+      "error": {
+        "fraction": "0",
+        "decimal": 0.0
+      },
+      "meets_epsilon": true
+    },
+    {
+      "n": 36,
+      "length": 31,
+      "selected_blocks": 150094635296999121,
+      "error": {
+        "fraction": "0",
+        "decimal": 0.0
+      },
+      "meets_epsilon": true
+    },
+    {
+      "n": 37,
+      "length": 31,
+      "selected_blocks": 450283905890997363,
+      "error": {
+        "fraction": "0",
+        "decimal": 0.0
+      },
+      "meets_epsilon": true
+    },
+    {
+      "n": 38,
+      "length": 32,
+      "selected_blocks": 1350851717672992089,
+      "error": {
+        "fraction": "0",
+        "decimal": 0.0
+      },
+      "meets_epsilon": true
+    },
+    {
+      "n": 39,
+      "length": 33,
+      "selected_blocks": 4052555153018976267,
+      "error": {
+        "fraction": "0",
+        "decimal": 0.0
+      },
+      "meets_epsilon": true
+    },
+    {
+      "n": 40,
+      "length": 34,
+      "selected_blocks": 12157665459056928801,
+      "error": {
+        "fraction": "0",
+        "decimal": 0.0
+      },
+      "meets_epsilon": true
+    },
+    {
+      "n": 41,
+      "length": 35,
+      "selected_blocks": 36472996377170786403,
+      "error": {
+        "fraction": "0",
+        "decimal": 0.0
+      },
+      "meets_epsilon": true
+    },
+    {
+      "n": 42,
+      "length": 36,
+      "selected_blocks": 109418989131512359209,
+      "error": {
+        "fraction": "0",
+        "decimal": 0.0
+      },
+      "meets_epsilon": true
+    },
+    {
+      "n": 43,
+      "length": 37,
+      "selected_blocks": 328256967394537077627,
+      "error": {
+        "fraction": "0",
+        "decimal": 0.0
+      },
+      "meets_epsilon": true
+    },
+    {
+      "n": 44,
+      "length": 37,
+      "selected_blocks": 984770902183611232881,
+      "error": {
+        "fraction": "0",
+        "decimal": 0.0
+      },
+      "meets_epsilon": true
+    },
+    {
+      "n": 45,
+      "length": 38,
+      "selected_blocks": 2954312706550833698643,
+      "error": {
+        "fraction": "0",
+        "decimal": 0.0
+      },
+      "meets_epsilon": true
+    },
+    {
+      "n": 46,
+      "length": 39,
+      "selected_blocks": 8862938119652501095929,
+      "error": {
+        "fraction": "0",
+        "decimal": 0.0
+      },
+      "meets_epsilon": true
+    },
+    {
+      "n": 47,
+      "length": 40,
+      "selected_blocks": 26588814358957503287787,
+      "error": {
+        "fraction": "0",
+        "decimal": 0.0
+      },
+      "meets_epsilon": true
+    },
+    {
+      "n": 48,
+      "length": 41,
+      "selected_blocks": 79766443076872509863361,
+      "error": {
+        "fraction": "0",
+        "decimal": 0.0
+      },
+      "meets_epsilon": true
+    },
+    {
+      "n": 49,
+      "length": 42,
+      "selected_blocks": 239299329230617529590083,
+      "error": {
+        "fraction": "0",
+        "decimal": 0.0
+      },
+      "meets_epsilon": true
+    },
+    {
+      "n": 50,
+      "length": 43,
+      "selected_blocks": 717897987691852588770249,
+      "error": {
+        "fraction": "0",
+        "decimal": 0.0
+      },
+      "meets_epsilon": true
+    }
+  ],
+  "minimum_n": 4,
+  "finite_interval_note": "minimum_n=null означает отсутствие подходящего n только на [1,n_max]",
+  "asymptotic": {
+    "eventually_below_epsilon": true,
+    "reason": "R>H: P_e(n)→0"
+  }
+}

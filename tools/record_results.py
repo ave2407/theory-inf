@@ -58,7 +58,11 @@ def main() -> None:
                            ("analyze", ["--n", "100", "--word", "A"])]:
             result = execute([mode, str(path.relative_to(ROOT)), *args], expected=2)
             lines += [f"- `{mode} {path.name}` → код 2; `{result.stderr.strip()}`"]
-    (ROOT / "RESULTS.md").write_text("\n".join(lines) + "\n", encoding="utf-8")
+    target = ROOT / "RESULTS.md"
+    marker = "# Результаты задачи 1.2"
+    previous = target.read_text(encoding="utf-8") if target.exists() else ""
+    following = marker + previous.split(marker, 1)[1] if marker in previous else ""
+    target.write_text("\n".join(lines) + "\n" + ("\n" + following if following else ""), encoding="utf-8")
     (ROOT / RESULTS / "summary.txt").write_text("\n".join(summary) + "\n", encoding="utf-8")
 
 

@@ -1,0 +1,275 @@
+{
+  "format": "uniform-types-v1",
+  "alphabet": [
+    "A"
+  ],
+  "distribution": {
+    "A": "1",
+    "B": "0",
+    "C": "0"
+  },
+  "rate": "0",
+  "q": 5,
+  "ordering": [
+    "Для каждого n перечислить типы (n_1,...,n_k) по алфавиту положительной вероятности.",
+    "Сортировать по убыванию ∏p_i^n_i; при равенстве — по возрастанию вектора типа.",
+    "Внутри типа сортировать блоки лексикографически по alphabet.",
+    "Взять первые selected_blocks блоков; нулевые вероятности не кодируются.",
+    "Блоку с рангом j от 0 назначить q-ичную запись j, дополненную нулями слева до length.",
+    "При length=0 единственное кодовое слово — пустой массив цифр.",
+    "Цифры кодового алфавита — целые числа 0,...,q−1; кодовое слово — массив цифр.",
+    "Обратное отображение: q-ичное слово → ранг → блок в том же порядке; неиспользованный ранг — ошибка."
+  ],
+  "blocks": [
+    {
+      "n": 1,
+      "length": 0,
+      "selected_blocks": 1
+    },
+    {
+      "n": 2,
+      "length": 0,
+      "selected_blocks": 1
+    },
+    {
+      "n": 3,
+      "length": 0,
+      "selected_blocks": 1
+    },
+    {
+      "n": 4,
+      "length": 0,
+      "selected_blocks": 1
+    },
+    {
+      "n": 5,
+      "length": 0,
+      "selected_blocks": 1
+    },
+    {
+      "n": 6,
+      "length": 0,
+      "selected_blocks": 1
+    },
+    {
+      "n": 7,
+      "length": 0,
+      "selected_blocks": 1
+    },
+    {
+      "n": 8,
+      "length": 0,
+      "selected_blocks": 1
+    },
+    {
+      "n": 9,
+      "length": 0,
+      "selected_blocks": 1
+    },
+    {
+      "n": 10,
+      "length": 0,
+      "selected_blocks": 1
+    },
+    {
+      "n": 11,
+      "length": 0,
+      "selected_blocks": 1
+    },
+    {
+      "n": 12,
+      "length": 0,
+      "selected_blocks": 1
+    },
+    {
+      "n": 13,
+      "length": 0,
+      "selected_blocks": 1
+    },
+    {
+      "n": 14,
+      "length": 0,
+      "selected_blocks": 1
+    },
+    {
+      "n": 15,
+      "length": 0,
+      "selected_blocks": 1
+    },
+    {
+      "n": 16,
+      "length": 0,
+      "selected_blocks": 1
+    },
+    {
+      "n": 17,
+      "length": 0,
+      "selected_blocks": 1
+    },
+    {
+      "n": 18,
+      "length": 0,
+      "selected_blocks": 1
+    },
+    {
+      "n": 19,
+      "length": 0,
+      "selected_blocks": 1
+    },
+    {
+      "n": 20,
+      "length": 0,
+      "selected_blocks": 1
+    },
+    {
+      "n": 21,
+      "length": 0,
+      "selected_blocks": 1
+    },
+    {
+      "n": 22,
+      "length": 0,
+      "selected_blocks": 1
+    },
+    {
+      "n": 23,
+      "length": 0,
+      "selected_blocks": 1
+    },
+    {
+      "n": 24,
+      "length": 0,
+      "selected_blocks": 1
+    },
+    {
+      "n": 25,
+      "length": 0,
+      "selected_blocks": 1
+    },
+    {
+      "n": 26,
+      "length": 0,
+      "selected_blocks": 1
+    },
+    {
+      "n": 27,
+      "length": 0,
+      "selected_blocks": 1
+    },
+    {
+      "n": 28,
+      "length": 0,
+      "selected_blocks": 1
+    },
+    {
+      "n": 29,
+      "length": 0,
+      "selected_blocks": 1
+    },
+    {
+      "n": 30,
+      "length": 0,
+      "selected_blocks": 1
+    },
+    {
+      "n": 31,
+      "length": 0,
+      "selected_blocks": 1
+    },
+    {
+      "n": 32,
+      "length": 0,
+      "selected_blocks": 1
+    },
+    {
+      "n": 33,
+      "length": 0,
+      "selected_blocks": 1
+    },
+    {
+      "n": 34,
+      "length": 0,
+      "selected_blocks": 1
+    },
+    {
+      "n": 35,
+      "length": 0,
+      "selected_blocks": 1
+    },
+    {
+      "n": 36,
+      "length": 0,
+      "selected_blocks": 1
+    },
+    {
+      "n": 37,
+      "length": 0,
+      "selected_blocks": 1
+    },
+    {
+      "n": 38,
+      "length": 0,
+      "selected_blocks": 1
+    },
+    {
+      "n": 39,
+      "length": 0,
+      "selected_blocks": 1
+    },
+    {
+      "n": 40,
+      "length": 0,
+      "selected_blocks": 1
+    },
+    {
+      "n": 41,
+      "length": 0,
+      "selected_blocks": 1
+    },
+    {
+      "n": 42,
+      "length": 0,
+      "selected_blocks": 1
+    },
+    {
+      "n": 43,
+      "length": 0,
+      "selected_blocks": 1
+    },
+    {
+      "n": 44,
+      "length": 0,
+      "selected_blocks": 1
+    },
+    {
+      "n": 45,
+      "length": 0,
+      "selected_blocks": 1
+    },
+    {
+      "n": 46,
+      "length": 0,
+      "selected_blocks": 1
+    },
+    {
+      "n": 47,
+      "length": 0,
+      "selected_blocks": 1
+    },
+    {
+      "n": 48,
+      "length": 0,
+      "selected_blocks": 1
+    },
+    {
+      "n": 49,
+      "length": 0,
+      "selected_blocks": 1
+    },
+    {
+      "n": 50,
+      "length": 0,
+      "selected_blocks": 1
+    }
+  ]
+}

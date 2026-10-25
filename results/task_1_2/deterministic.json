@@ -1,0 +1,520 @@
+{
+  "distribution": {
+    "A": "1",
+    "B": "0",
+    "C": "0"
+  },
+  "entropy_bits": "0",
+  "rate": "0",
+  "q": 5,
+  "epsilon": "1/10000",
+  "n_max": 50,
+  "table": [
+    {
+      "n": 1,
+      "length": 0,
+      "selected_blocks": 1,
+      "error": {
+        "fraction": "0",
+        "decimal": 0.0
+      },
+      "meets_epsilon": true
+    },
+    {
+      "n": 2,
+      "length": 0,
+      "selected_blocks": 1,
+      "error": {
+        "fraction": "0",
+        "decimal": 0.0
+      },
+      "meets_epsilon": true
+    },
+    {
+      "n": 3,
+      "length": 0,
+      "selected_blocks": 1,
+      "error": {
+        "fraction": "0",
+        "decimal": 0.0
+      },
+      "meets_epsilon": true
+    },
+    {
+      "n": 4,
+      "length": 0,
+      "selected_blocks": 1,
+      "error": {
+        "fraction": "0",
+        "decimal": 0.0
+      },
+      "meets_epsilon": true
+    },
+    {
+      "n": 5,
+      "length": 0,
+      "selected_blocks": 1,
+      "error": {
+        "fraction": "0",
+        "decimal": 0.0
+      },
+      "meets_epsilon": true
+    },
+    {
+      "n": 6,
+      "length": 0,
+      "selected_blocks": 1,
+      "error": {
+        "fraction": "0",
+        "decimal": 0.0
+      },
+      "meets_epsilon": true
+    },
+    {
+      "n": 7,
+      "length": 0,
+      "selected_blocks": 1,
+      "error": {
+        "fraction": "0",
+        "decimal": 0.0
+      },
+      "meets_epsilon": true
+    },
+    {
+      "n": 8,
+      "length": 0,
+      "selected_blocks": 1,
+      "error": {
+        "fraction": "0",
+        "decimal": 0.0
+      },
+      "meets_epsilon": true
+    },
+    {
+      "n": 9,
+      "length": 0,
+      "selected_blocks": 1,
+      "error": {
+        "fraction": "0",
+        "decimal": 0.0
+      },
+      "meets_epsilon": true
+    },
+    {
+      "n": 10,
+      "length": 0,
+      "selected_blocks": 1,
+      "error": {
+        "fraction": "0",
+        "decimal": 0.0
+      },
+      "meets_epsilon": true
+    },
+    {
+      "n": 11,
+      "length": 0,
+      "selected_blocks": 1,
+      "error": {
+        "fraction": "0",
+        "decimal": 0.0
+      },
+      "meets_epsilon": true
+    },
+    {
+      "n": 12,
+      "length": 0,
+      "selected_blocks": 1,
+      "error": {
+        "fraction": "0",
+        "decimal": 0.0
+      },
+      "meets_epsilon": true
+    },
+    {
+      "n": 13,
+      "length": 0,
+      "selected_blocks": 1,
+      "error": {
+        "fraction": "0",
+        "decimal": 0.0
+      },
+      "meets_epsilon": true
+    },
+    {
+      "n": 14,
+      "length": 0,
+      "selected_blocks": 1,
+      "error": {
+        "fraction": "0",
+        "decimal": 0.0
+      },
+      "meets_epsilon": true
+    },
+    {
+      "n": 15,
+      "length": 0,
+      "selected_blocks": 1,
+      "error": {
+        "fraction": "0",
+        "decimal": 0.0
+      },
+      "meets_epsilon": true
+    },
+    {
+      "n": 16,
+      "length": 0,
+      "selected_blocks": 1,
+      "error": {
+        "fraction": "0",
+        "decimal": 0.0
+      },
+      "meets_epsilon": true
+    },
+    {
+      "n": 17,
+      "length": 0,
+      "selected_blocks": 1,
+      "error": {
+        "fraction": "0",
+        "decimal": 0.0
+      },
+      "meets_epsilon": true
+    },
+    {
+      "n": 18,
+      "length": 0,
+      "selected_blocks": 1,
+      "error": {
+        "fraction": "0",
+        "decimal": 0.0
+      },
+      "meets_epsilon": true
+    },
+    {
+      "n": 19,
+      "length": 0,
+      "selected_blocks": 1,
+      "error": {
+        "fraction": "0",
+        "decimal": 0.0
+      },
+      "meets_epsilon": true
+    },
+    {
+      "n": 20,
+      "length": 0,
+      "selected_blocks": 1,
+      "error": {
+        "fraction": "0",
+        "decimal": 0.0
+      },
+      "meets_epsilon": true
+    },
+    {
+      "n": 21,
+      "length": 0,
+      "selected_blocks": 1,
+      "error": {
+        "fraction": "0",
+        "decimal": 0.0
+      },
+      "meets_epsilon": true
+    },
+    {
+      "n": 22,
+      "length": 0,
+      "selected_blocks": 1,
+      "error": {
+        "fraction": "0",
+        "decimal": 0.0
+      },
+      "meets_epsilon": true
+    },
+    {
+      "n": 23,
+      "length": 0,
+      "selected_blocks": 1,
+      "error": {
+        "fraction": "0",
+        "decimal": 0.0
+      },
+      "meets_epsilon": true
+    },
+    {
+      "n": 24,
+      "length": 0,
+      "selected_blocks": 1,
+      "error": {
+        "fraction": "0",
+        "decimal": 0.0
+      },
+      "meets_epsilon": true
+    },
+    {
+      "n": 25,
+      "length": 0,
+      "selected_blocks": 1,
+      "error": {
+        "fraction": "0",
+        "decimal": 0.0
+      },
+      "meets_epsilon": true
+    },
+    {
+      "n": 26,
+      "length": 0,
+      "selected_blocks": 1,
+      "error": {
+        "fraction": "0",
+        "decimal": 0.0
+      },
+      "meets_epsilon": true
+    },
+    {
+      "n": 27,
+      "length": 0,
+      "selected_blocks": 1,
+      "error": {
+        "fraction": "0",
+        "decimal": 0.0
+      },
+      "meets_epsilon": true
+    },
+    {
+      "n": 28,
+      "length": 0,
+      "selected_blocks": 1,
+      "error": {
+        "fraction": "0",
+        "decimal": 0.0
+      },
+      "meets_epsilon": true
+    },
+    {
+      "n": 29,
+      "length": 0,
+      "selected_blocks": 1,
+      "error": {
+        "fraction": "0",
+        "decimal": 0.0
+      },
+      "meets_epsilon": true
+    },
+    {
+      "n": 30,
+      "length": 0,
+      "selected_blocks": 1,
+      "error": {
+        "fraction": "0",
+        "decimal": 0.0
+      },
+      "meets_epsilon": true
+    },
+    {
+      "n": 31,
+      "length": 0,
+      "selected_blocks": 1,
+      "error": {
+        "fraction": "0",
+        "decimal": 0.0
+      },
+      "meets_epsilon": true
+    },
+    {
+      "n": 32,
+      "length": 0,
+      "selected_blocks": 1,
+      "error": {
+        "fraction": "0",
+        "decimal": 0.0
+      },
+      "meets_epsilon": true
+    },
+    {
+      "n": 33,
+      "length": 0,
+      "selected_blocks": 1,
+      "error": {
+        "fraction": "0",
+        "decimal": 0.0
+      },
+      "meets_epsilon": true
+    },
+    {
+      "n": 34,
+      "length": 0,
+      "selected_blocks": 1,
+      "error": {
+        "fraction": "0",
+        "decimal": 0.0
+      },
+      "meets_epsilon": true
+    },
+    {
+      "n": 35,
+      "length": 0,
+      "selected_blocks": 1,
+      "error": {
+        "fraction": "0",
+        "decimal": 0.0
+      },
+      "meets_epsilon": true
+    },
+    {
+      "n": 36,
+      "length": 0,
+      "selected_blocks": 1,
+      "error": {
+        "fraction": "0",
+        "decimal": 0.0
+      },
+      "meets_epsilon": true
+    },
+    {
+      "n": 37,
+      "length": 0,
+      "selected_blocks": 1,
+      "error": {
+        "fraction": "0",
+        "decimal": 0.0
+      },
+      "meets_epsilon": true
+    },
+    {
+      "n": 38,
+      "length": 0,
+      "selected_blocks": 1,
+      "error": {
+        "fraction": "0",
+        "decimal": 0.0
+      },
+      "meets_epsilon": true
+    },
+    {
+      "n": 39,
+      "length": 0,
+      "selected_blocks": 1,
+      "error": {
+        "fraction": "0",
+        "decimal": 0.0
+      },
+      "meets_epsilon": true
+    },
+    {
+      "n": 40,
+      "length": 0,
+      "selected_blocks": 1,
+      "error": {
+        "fraction": "0",
+        "decimal": 0.0
+      },
+      "meets_epsilon": true
+    },
+    {
+      "n": 41,
+      "length": 0,
+      "selected_blocks": 1,
+      "error": {
+        "fraction": "0",
+        "decimal": 0.0
+      },
+      "meets_epsilon": true
+    },
+    {
+      "n": 42,
+      "length": 0,
+      "selected_blocks": 1,
+      "error": {
+        "fraction": "0",
+        "decimal": 0.0
+      },
+      "meets_epsilon": true
+    },
+    {
+      "n": 43,
+      "length": 0,
+      "selected_blocks": 1,
+      "error": {
+        "fraction": "0",
+        "decimal": 0.0
+      },
+      "meets_epsilon": true
+    },
+    {
+      "n": 44,
+      "length": 0,
+      "selected_blocks": 1,
+      "error": {
+        "fraction": "0",
+        "decimal": 0.0
+      },
+      "meets_epsilon": true
+    },
+    {
+      "n": 45,
+      "length": 0,
+      "selected_blocks": 1,
+      "error": {
+        "fraction": "0",
+        "decimal": 0.0
+      },
+      "meets_epsilon": true
+    },
+    {
+      "n": 46,
+      "length": 0,
+      "selected_blocks": 1,
+      "error": {
+        "fraction": "0",
+        "decimal": 0.0
+      },
+      "meets_epsilon": true
+    },
+    {
+      "n": 47,
+      "length": 0,
+      "selected_blocks": 1,
+      "error": {
+        "fraction": "0",
+        "decimal": 0.0
+      },
+      "meets_epsilon": true
+    },
+    {
+      "n": 48,
+      "length": 0,
+      "selected_blocks": 1,
+      "error": {
+        "fraction": "0",
+        "decimal": 0.0
+      },
+      "meets_epsilon": true
+    },
+    {
+      "n": 49,
+      "length": 0,
+      "selected_blocks": 1,
+      "error": {
+        "fraction": "0",
+        "decimal": 0.0
+      },
+      "meets_epsilon": true
+    },
+    {
+      "n": 50,
+      "length": 0,
+      "selected_blocks": 1,
+      "error": {
+        "fraction": "0",
+        "decimal": 0.0
+      },
+      "meets_epsilon": true
+    }
+  ],
+  "minimum_n": 1,
+  "finite_interval_note": "minimum_n=null означает отсутствие подходящего n только на [1,n_max]",
+  "asymptotic": {
+    "eventually_below_epsilon": true,
+    "reason": "Ошибка всегда не больше ε"
+  }
+}

@@ -1,0 +1,19 @@
+{
+  "seconds": 2.11703149999812,
+  "python": "3.12.13",
+  "platform": "macOS-26.6.2-arm64-arm-64bit",
+  "command": [
+    "/Users/vladimir/PycharmProjects/theory-inf/.venv/bin/python",
+    "main.py",
+    "uniform",
+    "tests/fixtures/uniform_k5.json",
+    "--rate",
+    "1",
+    "--n-max",
+    "50",
+    "--code-output",
+    "/tmp/theory-inf-code-python312.json"
+  ],
+  "within_10_seconds": true,
+  "same_result_as_python313": true
+}

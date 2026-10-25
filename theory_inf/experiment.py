@@ -3,7 +3,7 @@
 from fractions import Fraction
 from collections.abc import Iterable, Sequence
 
-from theory_inf.distributions import InputError
+from theory_inf.distributions import InputError, fraction_text
 from theory_inf.source import Source
 
 TABLE_LENGTHS = (100, 1_000, 10_000, 100_000, 1_000_000)
@@ -47,7 +47,7 @@ def frequencies(
 def fraction_record(value: Fraction | None) -> dict | None:
     if value is None:
         return None
-    return {"fraction": str(value), "decimal": float(value)}
+    return {"fraction": fraction_text(value), "decimal": float(value)}
 
 
 def analyze(source: Source, word: Sequence[str], n: int, seed: int) -> dict:
