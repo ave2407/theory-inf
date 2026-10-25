@@ -1,0 +1,6 @@
+[project]
+name = "theory-inf"
+version = "0.1.0"
+description = "Домашнее задание №1 по теории информации, вариант 2"
+requires-python = ">=3.11"
+dependencies = []
